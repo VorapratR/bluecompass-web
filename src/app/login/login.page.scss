@@ -1,0 +1,19 @@
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+);
+
+$grid-max-widths: (
+  lg: 576px
+);
+
+.content{
+    ion-grid{
+      // width: 992px;
+      margin: 0;
+      padding-right: calc((100% - #{map-get($grid-max-widths, lg)}) / 2);
+      padding-left: calc((100% - #{map-get($grid-max-widths, lg)}) / 2);
+    }
+  }
