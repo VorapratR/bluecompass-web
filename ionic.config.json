@@ -1,7 +1,8 @@
 {
   "name": "bluecompass-web",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }
