@@ -1,17 +1,13 @@
 import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
+import { Injectable } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-
-
-@Injectable({
-  providedIn: 'root'
-})
 
 export interface Location {
   id?: string;
   neighbor: {};
-  x: number;
-  y: number;
+  x_point: number;
+  y_point: number;
   floor: number;
   name: string;
 }
@@ -19,9 +15,14 @@ export interface Location {
 export interface Image {
   url: string;
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+
 export class BluecompassService {
   private locations: Observable<Location[]>;
-  private img: Observable<Image[]>;
+  private imgs: Observable<Image[]>;
   private locationCollection: AngularFirestoreCollection<Location>;
   private imgCollection: AngularFirestoreCollection<Image>;
   constructor(private afs: AngularFirestore) {
@@ -37,7 +38,7 @@ export class BluecompassService {
     );
 
     this.imgCollection = this.afs.collection<Image>('img');
-    this.img = this.imgCollection.snapshotChanges().pipe(
+    this.imgs = this.imgCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
@@ -50,6 +51,10 @@ export class BluecompassService {
 
   getAllLocations(): Observable<Location[]> {
     return this.locations;
+  }
+
+  getAllImage(): Observable<Image[]> {
+    return this.imgs;
   }
 
   getLocationByID(id: string): Observable<Location> {
@@ -71,7 +76,10 @@ export class BluecompassService {
   }
 
   updateLocation(location: Location): Promise<void> {
-    return this.locationCollection.doc(location.id).update({ name: location.name, floor: location.floor, x: location.x, y: location.y });
+    return this.locationCollection.doc(location.id).update({
+      name: location.name, floor: location.floor,
+      x_point: location.x_point, y_point: location.y_point
+    });
   }
 
   deletelocation(id: string): Promise<void> {

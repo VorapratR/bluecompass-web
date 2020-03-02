@@ -1,3 +1,4 @@
+import { BluecompassService, Location, Image } from './../services/bluecompass.service';
 import { Component, OnInit} from '@angular/core';
 @Component({
   selector: 'app-add',
@@ -23,7 +24,18 @@ export class AddPage implements OnInit {
   previewUrl: any = null;
   fileUploadProgress: string = null;
 
-  constructor() {}
+  location: Location = {
+    id: 'Location-1',
+    name: 'Location name',
+    x_point: 0,
+    y_point: 0,
+    floor: 0,
+    neighbor: {
+      test: 'test'
+    },
+  };
+
+  constructor(private bluecompassService: BluecompassService) {}
 
   ngOnInit() {
   }
@@ -72,6 +84,14 @@ export class AddPage implements OnInit {
     reader.onload = (event) => {
       this.previewUrl = reader.result;
     };
+  }
+
+  addLocation() {
+    this.bluecompassService.addLocation(this.location).then(() => {
+      console.log('Idea added');
+    }, err => {
+      console.log('There was a problem adding your idea :(');
+    });
   }
 
 }

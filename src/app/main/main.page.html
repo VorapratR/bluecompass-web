@@ -5,5 +5,16 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-list *ngFor="let location of (locations | async)">
+    <ion-item>
+      {{location.id}}
+      {{location.name}}
+      {{location.floor}}
+    </ion-item>
+  </ion-list>
+  <ion-list *ngFor="let img of (imgs | async)">
+    <ion-item>
+      {{img.url}}
+    </ion-item>
+  </ion-list>
 </ion-content>
