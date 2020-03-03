@@ -14,6 +14,7 @@ export interface Location {
 
 export interface Image {
   data: string;
+  name: string;
 }
 
 @Injectable({

@@ -1,20 +1,55 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>main</ion-title>
+    <ion-title text-center>หน้าหลัก</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list *ngFor="let location of (locations| async)">
-    <ion-item>
-      {{location.id}}
-      {{location.name}}
-      {{location.floor}}
-    </ion-item>
+  <!-- <ion-searchbar showCancelButton="never"></ion-searchbar> -->
+  <ion-row>
+    <ion-col width-50 style="text-align: right">
+      <ion-button size="large" (click)="onNodeList()"><ion-icon name="ellipse-outline" style="margin-right: 2%;"></ion-icon>Node List</ion-button>
+    </ion-col>
+    <ion-col width-50 style="text-align: left">
+      <ion-button size="large" (click)="onImage()"><ion-icon name="images-outline" style="margin-right: 2%;"></ion-icon>Image List</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-item *ngIf="this.staticNodeList">
+    <h1>Node List</h1>
+  </ion-item>
+  <ion-list *ngIf="this.staticNodeList">
+    <ion-card *ngFor="let location of (locations| async)">
+      <ion-card-header>
+        <ion-card-subtitle>รหัสประจำจุดเครื่องหมาย:</ion-card-subtitle>
+        <ion-card-title>{{location.id}} </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row>
+          <ion-col>
+            <p><b>ชื่อประจำจุดเครื่องหมาย:</b>{{location.name}}</p>
+            <p><b>ชั้น:</b>{{location.floor}}</p>
+            <p><b>พิกัดในแนวแกน X:</b> {{location.x_point}} <b>พิกัดในแนวแกน Y:</b> {{location.y_point}}</p>
+          </ion-col>
+          <ion-col>
+            <p><b>จุดเครื่องหมายในบริเวณ:</b></p>
+            <p *ngFor="let node of neighor">{{node}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
   </ion-list>
-  <ion-list *ngFor="let img of (imgs | async)">
-    <ion-item>
-      {{img.url}}
-    </ion-item>
+
+
+  <ion-item *ngIf="this.staticImageList">
+    <h1>Image List</h1>
+  </ion-item>
+  <ion-list *ngIf="this.staticImageList">
+    <ion-card *ngFor="let img of (imgs | async)">
+      <img [src]="img.data"/>
+      <ion-card-header>
+        <ion-card-subtitle>ชื่ออาคาร</ion-card-subtitle>
+        <ion-card-title>{{img.name}}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
   </ion-list>
 </ion-content>

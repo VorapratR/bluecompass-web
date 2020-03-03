@@ -59,7 +59,8 @@ export class AddPage implements OnInit {
       node.neighbor = perNeighbor;
     });
     this.img = {
-      data : this.previewUrl
+      data : this.previewUrl,
+      name : this.buildingName
     };
     this.addLocationImage();
   }
