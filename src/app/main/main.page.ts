@@ -8,8 +8,8 @@ import {  MenuController } from '@ionic/angular';
   styleUrls: ['./main.page.scss'],
 })
 export class MainPage implements OnInit {
-  private locations: Observable<Location[]>;
-  private imgs: Observable<Image[]>;
+  public locations: Observable<Location[]>;
+  public imgs: Observable<Image[]>;
   constructor(
     public menuCtrl: MenuController,
     private bluecompassService: BluecompassService

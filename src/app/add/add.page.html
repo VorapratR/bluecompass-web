@@ -1,7 +1,7 @@
 <ion-header translucent>
   <ion-toolbar>
     <ion-title text-center>เพิ่มข้อมูลโครงสร้างภายในอาคาร</ion-title>
-    <ion-button slot="end" color="danger" (click)="addLocation()"><ion-icon name="save" style="margin-right: 3%;"></ion-icon> บันทึกข้อมูล </ion-button>
+    <ion-button slot="end" color="danger" (click)="submitForm()"><ion-icon name="save" style="margin-right: 3%;"></ion-icon> บันทึกข้อมูล </ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -32,7 +32,7 @@
             </ion-col>
           </ion-row>
           <ion-button expand="block" (click)="addNode()" ><ion-icon style="margin-right: 1%;" name="add-circle-outline"></ion-icon>เพิ่มจุดเครื่องหมาย</ion-button>
-          <ion-card *ngFor="let node of nodes;let i = index;">
+          <ion-card *ngFor="let locat of locations;let i = index;">
             <ion-card-header>
               <ion-card-subtitle>รหัสประจำจุดเครื่องหมาย</ion-card-subtitle>
               <ion-card-title>{{this.buildingID}}_{{this.buildingFloor}} - {{i}}</ion-card-title>
@@ -40,20 +40,20 @@
             <ion-card-content>
               <ion-label position="stacked"><h3>ชื่อประจำจุดเครื่องหมาย:</h3></ion-label>
               <ion-item>  
-                <ion-input type="text" [(ngModel)]="this.nodeName[i]" id="name"></ion-input>
+                <ion-input type="text" [(ngModel)]="this.nodeNameBuffer[i]" ></ion-input>
               </ion-item>
               <ion-label position="stacked"><h3>พิกัดบนแผนผัง</h3></ion-label>
               <ion-row>
                 <ion-col>
-                  <ion-input required type="text" [(ngModel)]="this.nodeXpoint[i]" id="x">X:</ion-input>
+                  <ion-input required type="text" [(ngModel)]="this.nodeXpointBuffer[i]" id="x">X:</ion-input>
                 </ion-col>
                 <ion-col>
-                  <ion-input required type="text" [(ngModel)]="this.nodeYpoint[i]" id="y">Y:</ion-input>
+                  <ion-input required type="text" [(ngModel)]="this.nodeYpointBuffer[i]" id="y">Y:</ion-input>
                 </ion-col>
               </ion-row>
               <ion-label position="stacked">จุดเครื่องหมายในบริเวณโดยรอบ</ion-label>
               <ion-item>  
-                <ion-textarea rows="2" cols="20" [(ngModel)]="this.nodeNeighbor[i]"></ion-textarea>
+                <ion-textarea rows="2" cols="20" [(ngModel)]="this.nodeNeighborBuffer[i]"></ion-textarea>
               </ion-item>
             </ion-card-content>
           </ion-card>

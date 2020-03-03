@@ -1,5 +1,6 @@
 import { BluecompassService, Location, Image } from './../services/bluecompass.service';
 import { Component, OnInit} from '@angular/core';
+import { element } from 'protractor';
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
@@ -8,32 +9,32 @@ import { Component, OnInit} from '@angular/core';
 export class AddPage implements OnInit {
   nodes = [];
   neighborNode = [];
+
   buildingID: string;
   buildingFloor: number;
   buildingName: string;
 
-  nodeName = [];
-  nodeXpoint = [];
-  nodeYpoint = [];
-  nodeID = [];
-  nodeNeighbor = [];
+  nodeNameBuffer: string[] = [];
+  nodeXpointBuffer: number[] = [];
+  nodeYpointBuffer: number[] = [];
+  nodeIDBuffer: string[] = [];
+  nodeNeighborBuffer: string[] = [];
 
   base64Image = '';
-
   fileData: File = null;
   previewUrl: any = null;
   fileUploadProgress: string = null;
 
   location: Location = {
-    id: 'Location-1',
-    name: 'Location name',
+    id: '',
+    name: '',
     x_point: 0,
     y_point: 0,
     floor: 0,
-    neighbor: {
-      test: 'test'
-    },
+    neighbor: {},
   };
+  locations: Location[] = [];
+  img: Image;
 
   constructor(private bluecompassService: BluecompassService) {}
 
@@ -41,31 +42,26 @@ export class AddPage implements OnInit {
   }
 
   addNode() {
-    this.nodes.push({
-      id: '',
-      name: '',
-      xpoint: '',
-      ypoint: '',
-      neighbor: '',
-      img: ''
-    });
+    this.locations.push(this.location);
   }
 
   submitForm() {
-    const neighborBuffter = {};
-    this.nodes.forEach((element, index) => {
-      this.nodeNeighbor[index].split(',').forEach( (ele, i) => {
-       neighborBuffter[ele] = 1;
+    this.locations.forEach((node, i) => {
+      node.id = `${this.buildingID}_${this.buildingFloor}-${i}`;
+      node.name = this.nodeNameBuffer[i];
+      node.x_point = this.nodeXpointBuffer[i];
+      node.y_point = this.nodeYpointBuffer[i];
+      node.floor = this.buildingFloor;
+      const perNeighbor = {};
+      this.nodeNeighborBuffer[i].split(',').forEach(neighbor => {
+        perNeighbor[neighbor] = 1;
       });
-      element.id = `${this.buildingID}_${this.buildingID}-${index}`;
-      element.name = this.nodeName[index];
-      element.xpoint = this.nodeXpoint[index];
-      element.ypoint = this.nodeYpoint[index];
-      element.neighbor = neighborBuffter;
-      element.img = this.previewUrl;
+      node.neighbor = perNeighbor;
     });
-    console.log(this.nodes);
-
+    this.img = {
+      data : this.previewUrl
+    };
+    this.addLocationImage();
   }
 
   fileProgress(fileInput: any) {
@@ -86,12 +82,27 @@ export class AddPage implements OnInit {
     };
   }
 
-  addLocation() {
-    this.bluecompassService.addLocation(this.location).then(() => {
-      console.log('Idea added');
-    }, err => {
-      console.log('There was a problem adding your idea :(');
+  addLocationImage() {
+    this.locations.forEach(location => {
+      console.log(location);
+      if (location.id) {
+        this.bluecompassService.addLocation(location).then(() => {
+          console.log('Location added');
+        }, err => {
+          console.log('There was a problem adding your location:(');
+        });
+      } else {
+        console.log('No location');
+      }
     });
+    if (this.img.data) {
+      this.bluecompassService.addImg(this.img).then(() => {
+          console.log('Img added');
+        }, err => {
+          console.log('There was a problem adding your Img:(');
+        });
+      } else {
+        console.log('No Image');
+    }
   }
-
 }

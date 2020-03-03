@@ -13,7 +13,7 @@ export interface Location {
 }
 
 export interface Image {
-  url: string;
+  data: string;
 }
 
 @Injectable({

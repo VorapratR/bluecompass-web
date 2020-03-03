@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list *ngFor="let location of (locations | async)">
+  <ion-list *ngFor="let location of (locations| async)">
     <ion-item>
       {{location.id}}
       {{location.name}}
