@@ -13,6 +13,7 @@ export class MainPage implements OnInit {
   public neighor = [];
   public locations: Observable<Location[]>;
   public imgs: Observable<Image[]>;
+  public myImg: any;
   constructor(
     public menuCtrl: MenuController,
     private bluecompassService: BluecompassService,
@@ -23,7 +24,8 @@ export class MainPage implements OnInit {
       this.presentLoading();
     }
   }
-   async presentLoading() {
+
+  async presentLoading() {
     const loading = await this.loadingController.create({
       message: 'Please wait...',
       duration: 2000
@@ -48,7 +50,7 @@ export class MainPage implements OnInit {
     this.menuCtrl.enable(true);
   }
 
-  staticToggle(event: Event) {
+  staticToggle(event: any) {
     if (event.detail.value === 'node_list') {
       this.staticNodeList = true;
       this.staticImageList = false;

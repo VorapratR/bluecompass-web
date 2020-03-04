@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {  MenuController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -8,13 +9,29 @@ import {  MenuController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
 
-  constructor(public menuCtrl: MenuController) { }
+  public userName: string;
+  public password: string;
+  public statusLogin: boolean;
+
+  constructor(public menuCtrl: MenuController, private router: Router) { 
+  }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
-   }
+  }
+
+  onMainPage() {
+    if (this.userName === '@dmin@test.com' && this.password === '@dmmin2525') {
+      this.statusLogin = false;
+      this.router.navigateByUrl(`/main`);
+    } else {
+      this.statusLogin = true;
+    }
+
+
+  }
 
 }
