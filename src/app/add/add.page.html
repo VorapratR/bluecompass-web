@@ -42,7 +42,7 @@
               <ion-item>  
                 <ion-input type="text" [(ngModel)]="this.nodeNameBuffer[i]" ></ion-input>
               </ion-item>
-              <ion-label position="stacked"><h3>พิกัดบนแผนผัง</h3></ion-label>
+              <ion-label position="stacked"><h3>พิกัดบนรูปแผนผัง</h3></ion-label>
               <ion-row>
                 <ion-col>
                   <ion-input required type="text" [(ngModel)]="this.nodeXpointBuffer[i]" id="x">X:</ion-input>
@@ -55,6 +55,9 @@
               <ion-item>  
                 <ion-textarea rows="2" cols="20" [(ngModel)]="this.nodeNeighborBuffer[i]"></ion-textarea>
               </ion-item>
+              <ion-label style="color: red;">
+                <b>*หมายเหตุ:</b> กรุณาใส่ชื่อจุดเครื่องหมายโดยรอบของจุดโดยใช้เครื่องหมายจุลภาค (',') คั่นกลางระหว่างจุดเครื่องหมาย
+              </ion-label>
             </ion-card-content>
           </ion-card>
         </ion-col>
