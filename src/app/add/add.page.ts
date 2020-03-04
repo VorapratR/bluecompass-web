@@ -38,8 +38,7 @@ export class AddPage implements OnInit {
 
   constructor(private bluecompassService: BluecompassService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   addNode() {
     this.locations.push(this.location);

@@ -40,7 +40,7 @@ export class MainPage implements OnInit {
         this.neighor = Object.keys(element.neighbor);
       });
     });
-    console.log(this.neighor);
+    console.log(this.locations);
     this.imgs = this.bluecompassService.getAllImage();
   }
 
@@ -48,13 +48,13 @@ export class MainPage implements OnInit {
     this.menuCtrl.enable(true);
   }
 
-  onNodeList() {
-    this.staticNodeList = true;
-    this.staticImageList = false;
-  }
-
-  onImage() {
-    this.staticNodeList = false;
-    this.staticImageList = true;
+  staticToggle(event: Event) {
+    if (event.detail.value === 'node_list') {
+      this.staticNodeList = true;
+      this.staticImageList = false;
+    } else {
+      this.staticNodeList = false;
+      this.staticImageList = true;
+    }
   }
 }

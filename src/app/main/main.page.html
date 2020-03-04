@@ -6,14 +6,17 @@
 
 <ion-content>
   <!-- <ion-searchbar showCancelButton="never"></ion-searchbar> -->
-  <ion-row>
-    <ion-col width-50 style="text-align: right">
-      <ion-button size="large" (click)="onNodeList()"><ion-icon name="ellipse-outline" style="margin-right: 2%;"></ion-icon>Node List</ion-button>
-    </ion-col>
-    <ion-col width-50 style="text-align: left">
-      <ion-button size="large" (click)="onImage()"><ion-icon name="images-outline" style="margin-right: 2%;"></ion-icon>Image List</ion-button>
-    </ion-col>
-  </ion-row>
+  <ion-segment (ionChange)="staticToggle($event)" color="tertiary" value="node_list">
+    <ion-segment-button value="node_list">
+      <ion-label>Node List</ion-label>
+      <ion-icon name="ellipse-outline"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="image_list">
+      <ion-label>Image List</ion-label>
+      <ion-icon name="images-outline"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+
   <ion-item *ngIf="this.staticNodeList">
     <h1>Node List</h1>
   </ion-item>
@@ -38,7 +41,6 @@
       </ion-card-content>
     </ion-card>
   </ion-list>
-
 
   <ion-item *ngIf="this.staticImageList">
     <h1>Image List</h1>
