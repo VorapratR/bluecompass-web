@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { BluecompassService, Location, Image } from './../services/bluecompass.service';
 import { Component, OnInit} from '@angular/core';
 import { element } from 'protractor';
@@ -36,7 +37,7 @@ export class AddPage implements OnInit {
   locations: Location[] = [];
   img: Image;
 
-  constructor(private bluecompassService: BluecompassService) {}
+  constructor(private bluecompassService: BluecompassService, private router: Router) {}
 
   ngOnInit() {}
 
@@ -45,6 +46,7 @@ export class AddPage implements OnInit {
   }
 
   submitForm() {
+    this.router.navigateByUrl(`/main`);
     this.locations.forEach((node, i) => {
       node.id = `${this.buildingID}_${this.buildingFloor}-${i}`;
       node.name = this.nodeNameBuffer[i];
@@ -61,7 +63,11 @@ export class AddPage implements OnInit {
       data : this.previewUrl,
       name : this.buildingName
     };
-    this.addLocationImage();
+    if (this.locations.length && this.img) {
+      this.addLocationImage();
+    } else {
+      console.log('No have Data');
+    }
   }
 
   fileProgress(fileInput: any) {
@@ -83,11 +89,16 @@ export class AddPage implements OnInit {
   }
 
   addLocationImage() {
+    const dataStatus = {
+      location: false,
+      img: false
+    };
     this.locations.forEach(location => {
       console.log(location);
       if (location.id) {
         this.bluecompassService.addLocation(location).then(() => {
           console.log('Location added');
+          dataStatus.location = true;
         }, err => {
           console.log('There was a problem adding your location:(');
         });
@@ -98,11 +109,16 @@ export class AddPage implements OnInit {
     if (this.img.data) {
       this.bluecompassService.addImg(this.img).then(() => {
           console.log('Img added');
+          dataStatus.img = true;
         }, err => {
           console.log('There was a problem adding your Img:(');
         });
       } else {
         console.log('No Image');
+    }
+    if (dataStatus.location && dataStatus.img) {
+      this.locations = [];
+      this.img = null;
     }
   }
 }
