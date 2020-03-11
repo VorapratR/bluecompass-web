@@ -33,6 +33,7 @@ export class AddPage implements OnInit {
     y_point: 0,
     floor: 0,
     neighbor: {},
+    neighborList: ''
   };
   locations: Location[] = [];
   img: Image;
@@ -44,6 +45,9 @@ export class AddPage implements OnInit {
   addNode() {
     this.locations.push(this.location);
   }
+  delNode() {
+    this.locations.pop();
+  }
 
   submitForm() {
     this.router.navigateByUrl(`/main`);
@@ -53,6 +57,7 @@ export class AddPage implements OnInit {
       node.x_point = this.nodeXpointBuffer[i];
       node.y_point = this.nodeYpointBuffer[i];
       node.floor = this.buildingFloor;
+      node.neighborList = this.nodeNeighborBuffer[i].toString();
       const perNeighbor = {};
       this.nodeNeighborBuffer[i].split(',').forEach(neighbor => {
         perNeighbor[neighbor] = 1;
@@ -63,7 +68,7 @@ export class AddPage implements OnInit {
       data : this.previewUrl,
       name : this.buildingName
     };
-    if (this.locations.length && this.img) {
+    if (this.locations.length && this.img.data) {
       this.addLocationImage();
     } else {
       console.log('No have Data');
@@ -93,6 +98,7 @@ export class AddPage implements OnInit {
       location: false,
       img: false
     };
+    console.log(this.img);
     this.locations.forEach(location => {
       console.log(location);
       if (location.id) {
@@ -115,10 +121,6 @@ export class AddPage implements OnInit {
         });
       } else {
         console.log('No Image');
-    }
-    if (dataStatus.location && dataStatus.img) {
-      this.locations = [];
-      this.img = null;
     }
   }
 }

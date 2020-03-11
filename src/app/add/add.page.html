@@ -33,6 +33,7 @@
           </ion-row>
           <ion-button expand="block" (click)="addNode()" ><ion-icon style="margin-right: 1%;" name="add-circle-outline"></ion-icon>เพิ่มจุดเครื่องหมาย</ion-button>
           <ion-card *ngFor="let locat of locations;let i = index;">
+            <ion-icon (click)="delNode()" color="danger" size="large" style="margin-left: 90%; margin-top: 2%;" name="close-circle-outline"></ion-icon>
             <ion-card-header>
               <ion-card-subtitle>รหัสประจำจุดเครื่องหมาย</ion-card-subtitle>
               <ion-card-title>{{this.buildingID}}_{{this.buildingFloor}} - {{i}}</ion-card-title>

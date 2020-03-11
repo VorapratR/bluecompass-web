@@ -21,7 +21,7 @@
     <h1>Node List</h1>
   </ion-item>
   <ion-list *ngIf="this.staticNodeList">
-    <ion-card *ngFor="let location of (locations| async)">
+    <ion-card *ngFor="let location of (locations| async) let i of index">
       <ion-card-header>
         <ion-card-subtitle>รหัสประจำจุดเครื่องหมาย:</ion-card-subtitle>
         <ion-card-title>{{location.id}} </ion-card-title>
@@ -35,7 +35,7 @@
           </ion-col>
           <ion-col>
             <p><b>จุดเครื่องหมายในบริเวณ:</b></p>
-            <p *ngFor="let node of neighor">{{node}}</p>
+            <p>{{location.neighborList}}</p>
           </ion-col>
         </ion-row>
       </ion-card-content>
@@ -47,7 +47,8 @@
   </ion-item>
   <ion-list *ngIf="this.staticImageList">
     <ion-card *ngFor="let img of (imgs | async)">
-      <img [src]="img.data"/>
+      <img *ngIf="img.data" [src]="img.data"/>
+      <img *ngIf="!img.data" src="../../assets/baramee1.png"/>
       <ion-card-header>
         <ion-card-subtitle>ชื่ออาคาร</ion-card-subtitle>
         <ion-card-title>{{img.name}}</ion-card-title>

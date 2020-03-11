@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 export interface Location {
   id?: string;
   neighbor: {};
+  neighborList: string;
   x_point: number;
   y_point: number;
   floor: number;
