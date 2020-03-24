@@ -13,7 +13,7 @@ export class LoginPage implements OnInit {
   public password: string;
   public statusLogin: boolean;
 
-  constructor(public menuCtrl: MenuController, private router: Router) { 
+  constructor(public menuCtrl: MenuController, private router: Router) {
   }
 
   ngOnInit() {
