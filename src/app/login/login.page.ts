@@ -24,14 +24,14 @@ export class LoginPage implements OnInit {
   }
 
   onMainPage() {
-    this.statusLogin = false;
-    this.router.navigateByUrl(`/main`);
-    // if (this.userName === '@dmin@test.com' && this.password === '@dmmin2525') {
-    //   this.statusLogin = false;
-    //   this.router.navigateByUrl(`/main`);
-    // } else {
-    //   this.statusLogin = true;
-    // }
+    // this.statusLogin = false;
+    // this.router.navigateByUrl(`/main`);
+    if (this.userName === '@dmin@test.com' && this.password === '@dmmin2525') {
+      this.statusLogin = false;
+      this.router.navigateByUrl(`/main`);
+    } else {
+      this.statusLogin = true;
+    }
   }
 
 }
