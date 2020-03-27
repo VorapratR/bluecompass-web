@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { BluecompassService, Location, Image } from './../services/bluecompass.service';
 import { Component, OnInit} from '@angular/core';
 import { element } from 'protractor';
+
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
@@ -71,7 +72,7 @@ export class AddPage implements OnInit {
     if (this.locations.length && this.img.data) {
       this.addLocationImage();
     } else {
-      console.log('No have Data');
+      console.log('Dont Have Data');
     }
   }
 
