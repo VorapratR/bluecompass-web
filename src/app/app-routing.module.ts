@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'add/:id',
     loadChildren: () => import('./add/add.module').then( m => m.AddPageModule)
+  },
+  {
+    path: 'migrate',
+    loadChildren: () => import('./migrate/migrate.module').then( m => m.MigratePageModule)
   }
 ];
 
