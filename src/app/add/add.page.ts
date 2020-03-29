@@ -53,7 +53,7 @@ export class AddPage implements OnInit {
   submitForm() {
     this.router.navigateByUrl(`/main`);
     this.locations.forEach((node, i) => {
-      node.id = `${this.buildingID}_${this.buildingFloor}-${i}`;
+      node.id = `${this.buildingID}${this.buildingFloor}_${i}`;
       node.name = this.nodeNameBuffer[i];
       node.x_point = this.nodeXpointBuffer[i];
       node.y_point = this.nodeYpointBuffer[i];
