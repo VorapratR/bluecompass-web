@@ -67,7 +67,8 @@ export class AddPage implements OnInit {
     });
     this.img = {
       data : this.previewUrl,
-      name : this.buildingName
+      name : this.buildingName,
+      tag: this.buildingID + this.buildingFloor,
     };
     if (this.locations.length && this.img.data) {
       this.addLocationImage();
