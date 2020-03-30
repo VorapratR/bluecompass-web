@@ -31,10 +31,10 @@ export class MainPage implements OnInit {
       duration: 2000
     });
     await loading.present();
-
     const { role, data } = await loading.onDidDismiss();
     console.log('Loading dismissed!');
   }
+
   ngOnInit() {
     this.locations = this.bluecompassService.getAllLocations();
     this.locations.subscribe(location => {
@@ -42,7 +42,7 @@ export class MainPage implements OnInit {
         this.neighor = Object.keys(element.neighbor);
       });
     });
-    console.log(this.locations);
+    // console.log(this.locations);
     this.imgs = this.bluecompassService.getAllImage();
   }
 

@@ -5,22 +5,17 @@
         <ion-list id="inbox-list">
           <ion-list-header>Blue C<ion-icon name="compass-outline"></ion-icon>pass</ion-list-header>
           <!-- <ion-note>hi@ionicframework.com</ion-note> -->
-          <ion-item [routerLink]="['/login']">
-            <!-- <ion-avatar slot="end">
-              <img src="../assets/icon/face-mask.svg">
-            </ion-avatar> -->
-            <ion-icon slot="end" size="large" name="person-circle" (click)="test()"></ion-icon>
-            <ion-label>
-              <h3><b>นายศรีครัง รูสมิแล</b></h3>
-              <p>เจ้าหน้าที่โรงพยาบาล</p>
-            </ion-label>
-          </ion-item>
-
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+          <ion-menu-toggle auto-hide="false">
+            <div *ngFor="let p of appPages; let i = index">
             <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
               <ion-icon slot="start" name="{{p.icon}}"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
+            </div>
+            <ion-item  lines="none"  detail="false" routerDirection="root" button (click)="logout()">
+              <ion-icon slot="start" name="log-out-outline"></ion-icon>
+              <ion-label>ออกจากระบบ</ion-label>
+            </ion-item>  
           </ion-menu-toggle>
         </ion-list>
       </ion-content>

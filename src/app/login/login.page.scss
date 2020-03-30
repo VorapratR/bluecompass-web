@@ -17,3 +17,12 @@ $grid-max-widths: (
       padding-left: calc((100% - #{map-get($grid-max-widths, lg)}) / 2);
     }
   }
+
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
