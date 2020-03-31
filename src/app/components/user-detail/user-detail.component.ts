@@ -25,22 +25,7 @@ export class UserDetailComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.user.displayName);
-  }
-
-  getCurrentUser() {
-    console.log('in getcurrentuser func');
-    if (this.authGuardService.isAuthenticated()) {
-      this.uSub = this.userService.get(this.afAuth.auth.currentUser.uid).subscribe(user => {
-        this.user = user;
-      });
-      console.log(this.user.displayName);
-      return true;
-    } else {
-      this.user = null;
-      console.log('user not authen');
-    }
-    return false;
+    // console.log(this.user.displayName);
   }
 
   ngOnDestroy() {

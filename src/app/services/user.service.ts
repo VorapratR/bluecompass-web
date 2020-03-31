@@ -1,25 +1,58 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { map, take } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import * as firebase from 'firebase';
+import { User } from '../models/user';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) { }
+  private users: Observable<User[]>;
+  private userCollection: AngularFirestoreCollection<User>;
 
-  get(id) {
-    return this.db.collection('users').snapshotChanges().pipe(
+  constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) {
+    this.userCollection = this.db.collection<User>('users');
+    this.users = this.userCollection.snapshotChanges().pipe(
       map(actions => {
-        return actions.map(action => {
-          const id = action.payload.doc.id;
-          const data = action.payload.doc.data();
-          return { id, ...data };
-        }).find(user => user.id === id);
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id , ...data };
+        });
       })
     );
   }
+
+
+  getAll(): Observable<User[]> {
+    return this.users;
+  }
+
+  getById(id: string) {
+    return this.userCollection.doc<User>(id).valueChanges().pipe(
+      take(1),
+      map(user => {
+        user.uid = id;
+        console.log(user.uid);
+        return user;
+      })
+    );
+  }
+
+  // updateUser(user: User): Promise<void> {
+  //   return this.userCollection.doc(user.id).update({
+  //     displayName: user.name,
+  //     email: user.email,
+  //   })
+  // }
+
+  updateRole(user: User): Promise<void> {
+    return this.userCollection.doc(user.uid).update({
+      roles: user.roles
+    });
+  }
+
 }

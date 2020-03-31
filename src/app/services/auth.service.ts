@@ -33,6 +33,7 @@ export class AuthService {
     const db = firebase.firestore();
     db.collection('users').doc(userUid).set({
       displayName: this.afAuth.auth.currentUser.displayName,
+      email: user.email,
       roles: ['guest']
     });
     return result.user;
