@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="isAdmin || isContributor">
   <!-- <ion-searchbar showCancelButton="never"></ion-searchbar> -->
   <ion-segment (ionChange)="staticToggle($event)" color="tertiary" value="node_list">
     <ion-segment-button value="node_list">
@@ -60,4 +60,10 @@
       </ion-card-header>
     </ion-card>
   </ion-list>
+</ion-content>
+
+<ion-content *ngIf="!isAdmin && !isContributor">
+  <div class="center-screen">
+    กรุณารอให้ผู้ดูแลระบบยืนยันตัวตนของคุณ
+  </div>
 </ion-content>

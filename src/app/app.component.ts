@@ -1,22 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/auth.service';
+import { Subscription, Observable } from 'rxjs';
+import { User } from './models/user';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { UserService } from './services/user.service';
+import { retry } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   public selectedIndex = 0;
   public appPages = [
     {
       title: 'หน้าหลัก',
       url: '/main',
-      icon: 'business'
+      icon: 'business',
     },
     {
       title: 'เพิ่มข้อมูล',
@@ -29,13 +34,21 @@ export class AppComponent implements OnInit {
       icon: 'people-circle-outline'
     }
   ];
+  public uSub: Subscription;
+  public user: Observable<User>;
+  public currentUser: User;
+  public isAdmin: boolean;
+  public isContributor: boolean;
 
   constructor(
     private platform: Platform,
+    public menuCtrl: MenuController,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private authService: AuthService,
     private navCtrl: NavController,
+    private afAuth: AngularFireAuth,
+    private userService: UserService,
   ) {
     this.initializeApp();
   }
@@ -47,10 +60,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  test() {
-    console.log('test');
-  }
-
   logout() {
     this.authService.logoutUser()
       .then(res => {
@@ -58,6 +67,27 @@ export class AppComponent implements OnInit {
         this.navCtrl.navigateBack('login');
       });
   }
-  ngOnInit() {
+
+  async ngOnInit() {
+    console.log('init side menu');
   }
+
+  getCurrentUser() {
+    if (this.afAuth.auth.currentUser !== null) {
+      this.uSub = this.userService.getById(this.afAuth.auth.currentUser.uid).subscribe(user => {
+        this.currentUser = user;
+        // console.log(user);
+        this.isAdmin = this.userService.isAdmin(this.currentUser);
+        this.isContributor = this.userService.isContributor(this.currentUser);
+      });
+    }
+    return this.currentUser ? true : false;
+  }
+
+  ngOnDestroy() {
+    if (this.uSub) {
+      this.uSub.unsubscribe();
+    }
+  }
+
 }

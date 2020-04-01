@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { map, take } from 'rxjs/operators';
+import { map, take, retry } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../models/user';
 import { Observable } from 'rxjs';
@@ -37,20 +37,28 @@ export class UserService {
       take(1),
       map(user => {
         user.id = id;
-        console.log(user.id);
         return user;
       })
     );
   }
 
-  // updateUser(user: User): Promise<void> {
-  //   return this.userCollection.doc(user.id).update({
-  //     displayName: user.name,
-  //     email: user.email,
-  //   })
-  // }
+  isAdmin(user: User) {
+    if (user.roles === 'admin') {
+      return true;
+    }
+    return false;
+  }
+
+  isContributor(user: User) {
+    if (user.roles === 'contributor') {
+      return true;
+    }
+    return false;
+  }
 
   updateRole(user: User): Promise<void> {
+    // console.log(user);
+    // return;
     return this.userCollection.doc(user.id).update({
       roles: user.roles
     });

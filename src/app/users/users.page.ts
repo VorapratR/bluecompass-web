@@ -5,7 +5,8 @@ import { User } from '../models/user';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { async } from '@angular/core/testing';
 import { element } from 'protractor';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController, NavController } from '@ionic/angular';
+import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-users',
@@ -17,7 +18,9 @@ export class UsersPage implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private formbuilder: FormBuilder,
-    public loadingController: LoadingController
+    private navCtrl: NavController,
+    public loadingController: LoadingController,
+    public toastController: ToastController
   ) {
     if (!this.users || this.userBuf === []) {
       this.presentLoading();
@@ -45,6 +48,9 @@ export class UsersPage implements OnInit, OnDestroy {
   formValue = {};
   usersObj: {};
   userBuf = [];
+  msg = '';
+  // errorMsg = '';
+
   ngOnInit() {
     this.getUser();
     this.users.subscribe(users => {
@@ -53,6 +59,14 @@ export class UsersPage implements OnInit, OnDestroy {
       });
       console.log(this.userBuf);
     });
+  }
+
+  async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000,
+    });
+    toast.present();
   }
 
   async presentLoading() {
@@ -66,15 +80,23 @@ export class UsersPage implements OnInit, OnDestroy {
   }
 
   submitData() {
-    this.users.subscribe( users => {
-      users.map( user => {
-        console.log(user.displayName, user.roles);
+    this.userBuf.map( user => {
+      this.userService.updateRole(user).then(() => {
+        this.msg = 'บันทึกสำเร็จ';
+      }, err => {
+        this.msg = 'เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง';
+        console.log(err);
       });
     });
+    this.navCtrl.navigateForward('/main');
   }
 
   ngOnDestroy() {
-    // this.users.unsubscribe();
+    this.userBuf = [];
+  }
+
+  ionViewWillLeave() {
+    this.userBuf = [];
   }
 
   async getUser() {

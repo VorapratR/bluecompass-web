@@ -19,14 +19,16 @@ export class MainPage implements OnInit, OnDestroy {
   public locations: Observable<Location[]>;
   public imgs: Observable<Image[]>;
   public myImg: any;
-  public users: Observable<User[]>;
   public uSub: Subscription;
+  public user: Observable<User>;
   public currentUser: User;
+  public isAdmin: boolean;
+  public isContributor: boolean;
+
   constructor(
     public menuCtrl: MenuController,
     private bluecompassService: BluecompassService,
     private afAuth: AngularFireAuth,
-    private authGuardService: AuthGuardService,
     private userService: UserService,
     public loadingController: LoadingController
   ) {
@@ -34,6 +36,7 @@ export class MainPage implements OnInit, OnDestroy {
     if (!this.locations || !this.imgs) {
       this.presentLoading();
     }
+
   }
 
   async presentLoading() {
@@ -46,7 +49,12 @@ export class MainPage implements OnInit, OnDestroy {
     console.log('Loading dismissed!');
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.loadUser();
+    await this.loadLocation();
+  }
+
+  async loadLocation() {
     this.locations = this.bluecompassService.getAllLocations();
     this.locations.subscribe(location => {
       location.forEach(element => {
@@ -55,16 +63,17 @@ export class MainPage implements OnInit, OnDestroy {
     });
     // console.log(this.locations);
     this.imgs = this.bluecompassService.getAllImage();
-
-    // this below
-
-    // console.log(this.afAuth.auth.currentUser.uid);
-    // this.userService.getById(this.afAuth.auth.currentUser.uid).subscribe(user => {
-    //   this.currentUser = user;
-    // });
-    // console.log(this.currentUser);
+    // console.log('location done');
   }
-  
+
+  async loadUser() {
+    this.uSub = this.userService.getById(this.afAuth.auth.currentUser.uid).subscribe(user => {
+      this.currentUser = user;
+      this.isAdmin = this.userService.isAdmin(this.currentUser);
+      this.isContributor = this.userService.isContributor(this.currentUser);
+    });
+  }
+
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
   }
