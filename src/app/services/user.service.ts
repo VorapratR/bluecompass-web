@@ -13,7 +13,8 @@ export class UserService {
   private users: Observable<User[]>;
   private userCollection: AngularFirestoreCollection<User>;
 
-  constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) {
+  constructor(
+    private db: AngularFirestore, private afAuth: AngularFireAuth) {
     this.userCollection = this.db.collection<User>('users');
     this.users = this.userCollection.snapshotChanges().pipe(
       map(actions => {
@@ -35,8 +36,8 @@ export class UserService {
     return this.userCollection.doc<User>(id).valueChanges().pipe(
       take(1),
       map(user => {
-        user.uid = id;
-        console.log(user.uid);
+        user.id = id;
+        console.log(user.id);
         return user;
       })
     );
@@ -50,7 +51,7 @@ export class UserService {
   // }
 
   updateRole(user: User): Promise<void> {
-    return this.userCollection.doc(user.uid).update({
+    return this.userCollection.doc(user.id).update({
       roles: user.roles
     });
   }

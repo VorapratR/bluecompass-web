@@ -36,6 +36,10 @@ const routes: Routes = [
     loadChildren: () => import('./migrate/migrate.module').then( m => m.MigratePageModule),
     canActivate: [AuthGuardService],
   },
+  {
+    path: 'users',
+    loadChildren: () => import('./users/users.module').then( m => m.UsersPageModule)
+  },
 ];
 
 @NgModule({

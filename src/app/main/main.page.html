@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <ion-title slot="start" text-center>หน้าหลัก</ion-title>
-    <ion-button slot="end">
-    </ion-button>
+    <!-- <ion-button slot="end">
+    </ion-button> -->
   </ion-toolbar>
 </ion-header>
 
@@ -36,7 +36,11 @@
           </ion-col>
           <ion-col>
             <p><b>จุดเครื่องหมายในบริเวณ:</b></p>
-            <p>{{location.neighborList}}</p>
+            <p>
+              <span>
+                {{ location.neighborList }}
+              </span>
+            </p>
           </ion-col>
         </ion-row>
       </ion-card-content>

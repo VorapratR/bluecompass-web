@@ -22,6 +22,11 @@ export class AppComponent implements OnInit {
       title: 'เพิ่มข้อมูล',
       url: '/add',
       icon: 'add-circle'
+    },
+    {
+      title: 'รายชื่อผู้ใช้',
+      url: '/users',
+      icon: 'people-circle-outline'
     }
   ];
 

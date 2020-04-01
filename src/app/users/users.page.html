@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>รายชื่อผู้ใช้งาน</ion-title>
+    <ion-button slot="end" (click)="submitData()">
+      ยืนยัน
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-card *ngFor="let user of (users | async) let i of index">
+      <ion-card-header>
+        <ion-card-subtitle>
+          ชื่อผู้ใช้
+        </ion-card-subtitle>
+        <ion-card-title>
+          {{ user.displayName }}
+        </ion-card-title>
+        <p>email: {{ user.email }}</p>
+        <ion-card-subtitle>
+          <ion-item>
+            <ion-label>ตำแหน่ง</ion-label>
+            <ion-select [(ngModel)]="user.roles" (ionChange)="rolesChange(user.roles, user.id)">
+              <ion-select-option *ngFor="let role of roles" [value]="role.value">
+                {{ role.label }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+  </ion-list>
+</ion-content>

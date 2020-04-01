@@ -1,9 +1,9 @@
 export interface User {
-  uid: string;
+  id: string;
   displayName: string;
   email: string;
   photoURL?: string;
-  roles: string[];
+  roles: string;
 }
 
 export interface EmailPasswordPair {
@@ -15,5 +15,5 @@ export interface NewAccount {
   name: string;
   email: string;
   password: string;
-  roles: string[];
+  roles: string;
 }

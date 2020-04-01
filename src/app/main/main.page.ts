@@ -56,7 +56,6 @@ export class MainPage implements OnInit, OnDestroy {
     // console.log(this.locations);
     this.imgs = this.bluecompassService.getAllImage();
 
-
     // this below
 
     // console.log(this.afAuth.auth.currentUser.uid);
@@ -65,10 +64,9 @@ export class MainPage implements OnInit, OnDestroy {
     // });
     // console.log(this.currentUser);
   }
-
+  
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
-
   }
 
   staticToggle(event: any) {
