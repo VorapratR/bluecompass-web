@@ -1,7 +1,7 @@
 <ion-header translucent>
   <ion-toolbar>
     <ion-title text-center>เพิ่มข้อมูลโครงสร้างภายในอาคาร</ion-title>
-    <ion-button slot="end" color="danger" (click)="submitForm()"><ion-icon name="save" style="margin-right: 3%;"></ion-icon> บันทึกข้อมูล </ion-button>
+    <ion-button *ngIf="!this.editStage" slot="end" color="danger" (click)="submitForm()"><ion-icon name="save" style="margin-right: 3%;"></ion-icon> บันทึกข้อมูล </ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -72,4 +72,21 @@
       </ion-row>
     </ion-grid>
 </ion-content>
+
+<ion-footer *ngIf="this.editStage">
+  <ion-row no-padding text-center>
+    <ion-col size="6">
+      <ion-button expand="block" fill="outline" color="danger" (click)="deleteIdea()">
+        <ion-icon name="trash" slot="start"></ion-icon>
+        ลบข้อมูล
+      </ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button expand="block" fill="solid" color="success" (click)="updateIdea()">
+        <ion-icon name="save" slot="start"></ion-icon>
+        อัปเดตข้อมูล
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
 

@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BluecompassService, Location, Image } from './../services/bluecompass.service';
 import { Component, OnInit} from '@angular/core';
 import { element } from 'protractor';
@@ -39,10 +39,23 @@ export class AddPage implements OnInit {
   locations: Location[] = [];
   img: Image;
 
-  constructor(private bluecompassService: BluecompassService, private router: Router) {}
+  editStage = false;
+
+  constructor(
+    private bluecompassService: BluecompassService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {}
 
+  ionViewWillEnter() {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log(id);
+    if (id) {
+      this.editStage = true;
+    }
+  }
   addNode() {
     this.locations.push(this.location);
   }
@@ -124,5 +137,13 @@ export class AddPage implements OnInit {
       } else {
         console.log('No Image');
     }
+  }
+
+  deleteIdea() {
+    console.log('del');
+  }
+
+  updateIdea() {
+    console.log('update');
   }
 }

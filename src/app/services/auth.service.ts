@@ -70,7 +70,7 @@ export class AuthService {
   }
 
   userDetails() {
-    return this.afAuth.auth.currentUser;
+    return this.afAuth.auth.currentUser.uid;
   }
 
   async logInWithProvider(provider: LoginProvider): Promise<firebase.User> {
