@@ -57,6 +57,7 @@ export class LoginPage implements OnInit {
         this.validationsForm.controls.email.reset();
         this.validationsForm.controls.password.reset();
       }, err => {
+        console.log(err);
         this.errorMsg = 'Email หรือรหัสผ่านไม่ถูกต้อง';
       });
   }

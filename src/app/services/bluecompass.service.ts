@@ -2,6 +2,7 @@ import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from 
 import { Injectable } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { element } from 'protractor';
 
 export interface Location {
   id?: string;
@@ -60,12 +61,26 @@ export class BluecompassService {
     return this.imgs;
   }
 
-  getLocationByID(id: string): Observable<Location> {
-    return this.locationCollection.doc<Location>(id).valueChanges().pipe(
-      take(1),
-      map(idea => {
-        idea.id = id;
-        return idea;
+  getLocationByID(id: string) {
+    // return this.locationCollection.doc<Location>(id).valueChanges().pipe(
+    //   take(1),
+    //   map(idea => {
+    //     idea.id = id;
+    //     console.log(idea.id);
+    //     return idea;
+    //   })
+    // );
+    return this.locationCollection.snapshotChanges().pipe(
+      map(actions => {
+        if (actions) {
+          return actions.map(action => {
+            // const id = action.payload.doc.id;
+            const data = action.payload.doc.data();
+            // const location = {id, ...data};
+            // console.log(data);
+            return data;
+          }).find(element => element.id === id);
+        }
       })
     );
   }
@@ -87,5 +102,6 @@ export class BluecompassService {
 
   deletelocation(id: string): Promise<void> {
     return this.locationCollection.doc(id).delete();
+    // return this.locationCollection.doc();
   }
 }

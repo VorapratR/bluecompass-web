@@ -2,6 +2,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BluecompassService, Location, Image } from './../services/bluecompass.service';
 import { Component, OnInit} from '@angular/core';
 import { element } from 'protractor';
+import { Observable } from 'rxjs';
+import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-add',
@@ -39,6 +41,8 @@ export class AddPage implements OnInit {
   locations: Location[] = [];
   img: Image;
 
+  tmpLocation;
+  tmp;
   editStage = false;
 
   constructor(
@@ -47,12 +51,16 @@ export class AddPage implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.activatedRoute.snapshot.paramMap.get('id')) {
+      this.getNodeById(this.activatedRoute.snapshot.paramMap.get('id'));
+    }
+  }
 
   ionViewWillEnter() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(id);
-    if (id) {
+    // this.url_id = this.activatedRoute.snapshot.paramMap.get('id');
+    // console.log(this.url_id);
+    if (this.activatedRoute.snapshot.paramMap.get('id')) {
       this.editStage = true;
     }
   }
@@ -61,6 +69,16 @@ export class AddPage implements OnInit {
   }
   delNode() {
     this.locations.pop();
+  }
+
+  getNodeById(id: string) {
+    // console.log('in get node id');
+    this.tmpLocation = this.bluecompassService.getLocationByID(id);
+    console.log(this.tmpLocation);
+    this.tmpLocation.forEach(location => {
+      console.log(location);
+    });
+
   }
 
   submitForm() {
