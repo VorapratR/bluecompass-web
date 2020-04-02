@@ -46,15 +46,16 @@
               <ion-label position="stacked"><h3>พิกัดบนรูปแผนผัง</h3></ion-label>
               <ion-row>
                 <ion-col>
-                  <ion-input required type="text" [(ngModel)]="this.nodeXpointBuffer[i]" id="x">X:</ion-input>
+                  <ion-input required type="number" [(ngModel)]="this.nodeXpointBuffer[i]" id="x">X:</ion-input>
                 </ion-col>
                 <ion-col>
-                  <ion-input required type="text" [(ngModel)]="this.nodeYpointBuffer[i]" id="y">Y:</ion-input>
+                  <ion-input required type="number" [(ngModel)]="this.nodeYpointBuffer[i]" id="y">Y:</ion-input>
                 </ion-col>
               </ion-row>
               <ion-label position="stacked">จุดเครื่องหมายในบริเวณโดยรอบ</ion-label>
               <ion-item>  
                 <ion-textarea rows="2" cols="20" [(ngModel)]="this.nodeNeighborBuffer[i]"></ion-textarea>
+                <ion-input required type="number" [(ngModel)]="this.weightNeighbor[i]" id="weight">ระยะห่างระหว่างจุด:</ion-input>
               </ion-item>
               <ion-label style="color: red;">
                 <b>*หมายเหตุ:</b> กรุณาใส่ชื่อจุดเครื่องหมายโดยรอบของจุดโดยใช้เครื่องหมายจุลภาค (',') คั่นกลางระหว่างจุดเครื่องหมาย

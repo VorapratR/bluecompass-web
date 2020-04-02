@@ -23,6 +23,7 @@ export class AddPage implements OnInit {
   nodeYpointBuffer: number[] = [];
   nodeIDBuffer: string[] = [];
   nodeNeighborBuffer: string[] = [];
+  weightNeighbor: number[] = [];
 
   base64Image = '';
   fileData: File = null;
@@ -92,7 +93,7 @@ export class AddPage implements OnInit {
       node.neighborList = this.nodeNeighborBuffer[i].toString();
       const perNeighbor = {};
       this.nodeNeighborBuffer[i].split(',').forEach(neighbor => {
-        perNeighbor[neighbor] = 1;
+        perNeighbor[neighbor] = this.weightNeighbor[i];
       });
       node.neighbor = perNeighbor;
     });
