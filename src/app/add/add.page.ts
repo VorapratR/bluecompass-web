@@ -1,16 +1,13 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { BluecompassService, Location, Image } from './../services/bluecompass.service';
-import { Component, OnInit} from '@angular/core';
-import { element } from 'protractor';
-import { Observable } from 'rxjs';
-import { runInThisContext } from 'vm';
-
+import { Component, OnInit , OnDestroy} from '@angular/core';
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
   styleUrls: ['./add.page.scss'],
 })
-export class AddPage implements OnInit {
+export class AddPage implements OnInit, OnDestroy {
   nodes = [];
   neighborNode = [];
 
@@ -49,7 +46,8 @@ export class AddPage implements OnInit {
   constructor(
     private bluecompassService: BluecompassService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -83,20 +81,35 @@ export class AddPage implements OnInit {
   }
 
   submitForm() {
-    this.router.navigateByUrl(`/main`);
+    this.successToast();
+    console.log(this.locations);
+    console.log(this.nodeNeighborBuffer);
     this.locations.forEach((node, i) => {
       node.id = `${this.buildingID}${this.buildingFloor}_${i}`;
       node.name = this.nodeNameBuffer[i];
       node.x_point = this.nodeXpointBuffer[i];
       node.y_point = this.nodeYpointBuffer[i];
       node.floor = this.buildingFloor;
-      node.neighborList = this.nodeNeighborBuffer[i].toString();
-      const perNeighbor = {};
-      this.nodeNeighborBuffer[i].split(',').forEach(neighbor => {
-        perNeighbor[neighbor] = this.weightNeighbor[i];
-      });
-      node.neighbor = perNeighbor;
+      if (this.nodeNeighborBuffer) {
+        const perNeighbor = {};
+        this.nodeNeighborBuffer[i].split(',').forEach(neighbor => {
+          neighbor.split('*').forEach((weightNeighbor) => {
+            // tslint:disable-next-line:radix
+            if (parseInt(weightNeighbor)) {
+              const name = neighbor.toString().slice(0, -2);
+              // tslint:disable-next-line:radix
+              perNeighbor[name] = parseInt(weightNeighbor);
+            }
+          });
+        });
+        node.neighbor = perNeighbor;
+        node.neighborList = Object.keys(perNeighbor).toString();
+      } else {
+        node.neighbor = null;
+        node.neighborList = '';
+      }
     });
+    // console.log(this.locations);
     this.img = {
       data : this.previewUrl,
       name : this.buildingName,
@@ -104,6 +117,7 @@ export class AddPage implements OnInit {
     };
     if (this.locations.length && this.img.data) {
       this.addLocationImage();
+      this.router.navigateByUrl(`/main`);
     } else {
       console.log('Dont Have Data');
     }
@@ -156,8 +170,52 @@ export class AddPage implements OnInit {
       } else {
         console.log('No Image');
     }
+    if (dataStatus.img && dataStatus.location) {
+      this.clearData();
+      this.router.navigateByUrl(`/main`);
+    } else {
+      this.missingToast();
+    }
   }
 
+  ngOnDestroy() {
+    this.clearData();
+  }
+  clearData() {
+    this.nodes = [];
+    this.neighborNode = [];
+    this.buildingID = '';
+    this.buildingFloor = null;
+    this.buildingName = '';
+
+    this.nodeNameBuffer = [];
+    this.nodeXpointBuffer = [];
+    this.nodeYpointBuffer = [];
+    this.nodeIDBuffer = [];
+    this.nodeNeighborBuffer = [];
+    this.weightNeighbor = [];
+
+    this.base64Image = '';
+    this.fileData = null;
+    this.previewUrl = null;
+    this.fileUploadProgress = null;
+    this.locations = [];
+  }
+
+  async successToast() {
+    const toast = await this.toastController.create({
+      message: 'กรุณารอสักครู่...กำลังบันทึกข้อมูลเข้าสุดระบบ',
+      duration: 2000
+    });
+    toast.present();
+  }
+  async missingToast() {
+    const toast = await this.toastController.create({
+      message: 'กรุณาใส่ข้อมูลในครบถ้วน',
+      duration: 2000
+    });
+    toast.present();
+  }
   deleteIdea() {
     console.log('del');
   }

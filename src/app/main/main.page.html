@@ -7,19 +7,19 @@
 </ion-header>
 
 <ion-content *ngIf="isAdmin || isContributor">
-  <!-- <ion-searchbar showCancelButton="never"></ion-searchbar> -->
+  
   <ion-segment (ionChange)="staticToggle($event)" color="tertiary" value="node_list">
     <ion-segment-button value="node_list">
-      <ion-label>Node List</ion-label>
+      <ion-label>จุดเครื่องหมาย</ion-label>
       <ion-icon name="ellipse-outline"></ion-icon>
     </ion-segment-button>
     <ion-segment-button value="image_list">
-      <ion-label>Image List</ion-label>
+      <ion-label>แผนผังอาคาร</ion-label>
       <ion-icon name="images-outline"></ion-icon>
     </ion-segment-button>
   </ion-segment>
   <ion-item *ngIf="this.staticNodeList">
-    <h1>Node List</h1>
+    <h1>รายการจุดเครื่องหมาย</h1>
   </ion-item>
   <ion-list *ngIf="this.staticNodeList">
     <ion-card *ngFor="let location of (locations | async) let i of index">
@@ -48,7 +48,7 @@
   </ion-list>
 
   <ion-item *ngIf="this.staticImageList">
-    <h1>Image List</h1>
+    <h1>รายการแผนผังอาคาร</h1>
   </ion-item>
   <ion-list *ngIf="this.staticImageList">
     <ion-card *ngFor="let img of (imgs | async)">

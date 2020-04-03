@@ -41,7 +41,7 @@ export class MainPage implements OnInit, OnDestroy {
 
   async presentLoading() {
     const loading = await this.loadingController.create({
-      message: 'Please wait...',
+      message: 'กรุณารอสักครู่...',
       duration: 2000
     });
     await loading.present();
