@@ -64,21 +64,23 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.logoutUser()
       .then(res => {
         // console.log(this.afAuth.auth.currentUser);
+        this.currentUser = null;
         this.navCtrl.navigateBack('login');
       });
+
   }
 
-  async ngOnInit() {
-    console.log('init side menu');
+  ngOnInit() {
   }
 
   getCurrentUser() {
-    if (this.afAuth.auth.currentUser !== null) {
+    if (this.afAuth.auth.currentUser !== null && !this.currentUser) {
+      console.log('x');
       this.uSub = this.userService.getById(this.afAuth.auth.currentUser.uid).subscribe(user => {
         this.currentUser = user;
-        // console.log(user);
         this.isAdmin = this.userService.isAdmin(this.currentUser);
         this.isContributor = this.userService.isContributor(this.currentUser);
+        console.log(this.currentUser);
       });
     }
     return this.currentUser ? true : false;

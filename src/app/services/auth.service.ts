@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   isAutenticated() {
-    if (this.afAuth.auth.currentUser) {
+    if (this.afAuth.auth.currentUser !== null) {
       return true;
     }
     return false;
