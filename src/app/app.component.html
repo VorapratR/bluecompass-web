@@ -5,12 +5,13 @@
         <ion-list id="inbox-list">
           <ion-list-header>Blue C<ion-icon name="compass-outline"></ion-icon>pass</ion-list-header>
           <!-- <ion-note>hi@ionicframework.com</ion-note> -->
-          <ion-item  *ngIf="getCurrentUser()">
-            <ion-icon slot="end" size="large" name="person-circle"></ion-icon>
-            <ion-label>
-              <h3><b>{{ currentUser.displayName }}</b></h3>
-            </ion-label>
-          </ion-item>
+          <!-- <div *ngIf="currentUser"> -->
+            <ion-item  *ngIf="getCurrentUser()">
+              <ion-icon slot="end" size="large" name="person-circle"></ion-icon>
+              <ion-label>
+                <h3><b>สวัสดีคุณ {{ currentUser.displayName }}</b></h3>
+              </ion-label>
+            </ion-item>
           <ion-menu-toggle auto-hide="false">
             <ion-item  routerDirection="root" [routerLink]="['/main']" lines="none" detail="false">
               <ion-icon slot="start" name="business"></ion-icon>
