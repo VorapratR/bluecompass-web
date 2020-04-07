@@ -8,7 +8,8 @@
 
 
 <ion-content>
-    <ion-grid>
+    <!-- add -->
+    <ion-grid *ngIf="!this.editStage">
       <ion-row>
         <ion-col>
           <h2>ข้อมูล</h2>
@@ -59,7 +60,7 @@
               </ion-item>
               <ion-label style="color: red;">
                 <b>*หมายเหตุ:</b> กรุณาใส่ชื่อจุดเครื่องหมาย โดยใช้เครื่องหมายดอกจัน ('*') ต่อท้ายเพื่อระบุระยะของจุดเครื่องหมายโดยรอบ และใช้เครื่องหมายจุลภาค (',') คั่นกลางระหว่างจุดเครื่องหมาย เช่น data_1-1*4,data_1-2*1
-              </ion-label>
+              </ion-label>มึ
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -72,6 +73,36 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+
+    <!-- edit  -->
+    <ion-card *ngIf="this.editStage">
+      <ion-card-header>
+        <ion-card-subtitle>{{this.locationEditMode.id}}</ion-card-subtitle>
+        <ion-card-title>รหัสประจำจุดเครื่องหมาย</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-label position="stacked"><h3>ชื่อประจำจุดเครื่องหมาย:</h3></ion-label>
+        <ion-item>  
+          <ion-input type="text" [(ngModel)]="this.locationEditMode.name" ></ion-input>
+        </ion-item>
+        <ion-label position="stacked"><h3>พิกัดบนรูปแผนผัง</h3></ion-label>
+        <ion-row>
+          <ion-col>
+            <ion-input required type="number" [(ngModel)]="this.locationEditMode.x_point" id="x">X:</ion-input>
+          </ion-col>
+          <ion-col>
+            <ion-input required type="number" [(ngModel)]="this.locationEditMode.y_point" id="y">Y:</ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-label position="stacked">จุดเครื่องหมายในบริเวณโดยรอบ</ion-label>
+        <ion-item>  
+          <ion-textarea rows="2" cols="20" [(ngModel)]="this.locationEditMode.neighborList"></ion-textarea>
+        </ion-item>
+        <ion-label style="color: red;">
+          <b>*หมายเหตุ:</b> กรุณาใส่ชื่อจุดเครื่องหมาย โดยใช้เครื่องหมายดอกจัน ('*') ต่อท้ายเพื่อระบุระยะของจุดเครื่องหมายโดยรอบ และใช้เครื่องหมายจุลภาค (',') คั่นกลางระหว่างจุดเครื่องหมาย เช่น data_1-1*4,data_1-2*1
+        </ion-label>
+      </ion-card-content>
+    </ion-card>
 </ion-content>
 
 <ion-footer *ngIf="this.editStage">

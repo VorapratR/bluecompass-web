@@ -36,6 +36,16 @@ export class AddPage implements OnInit, OnDestroy {
     neighbor: {},
     neighborList: ''
   };
+
+  locationEditMode: Location = {
+    id: '',
+    name: '',
+    x_point: 0,
+    y_point: 0,
+    floor: 0,
+    neighbor: {},
+    neighborList: ''
+  };
   locations: Location[] = [];
   img: Image;
 
@@ -75,7 +85,14 @@ export class AddPage implements OnInit, OnDestroy {
     this.tmpLocation = this.bluecompassService.getLocationByID(id);
     console.log(this.tmpLocation);
     this.tmpLocation.forEach(location => {
-      console.log(location);
+      (location.id) ? this.locationEditMode.id = location.id : this.locationEditMode.id = 'ไม่พบข้อมูล';
+      (location.name) ? this.locationEditMode.name = location.name : this.locationEditMode.name = location.name = 'ไม่พบข้อมูล';
+      (location.neighbor) ? this.locationEditMode.neighbor = location.neighbor : this.locationEditMode.neighbor = 'ไม่พบข้อมูล';
+      // tslint:disable-next-line:max-line-length
+      (location.neighborList) ? this.locationEditMode.neighborList = location.neighborlist:this.locationEditMode.neighborList = 'ไม่พบข้อมูล';
+      this.locationEditMode.x_point = location.x_point;
+      this.locationEditMode.y_point = location.y_point;
+      this.locationEditMode.floor = location.floor;
     });
 
   }
