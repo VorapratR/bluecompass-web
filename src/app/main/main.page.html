@@ -25,7 +25,7 @@
     <ion-card *ngFor="let location of (locations | async) let i of index">
       <ion-card-header>
         <ion-card-subtitle>รหัสประจำจุดเครื่องหมาย:</ion-card-subtitle>
-        <ion-card-title>{{ location.id }}<ion-icon color="danger" style="margin-left: 80%;" size="large" name="settings" [routerLink]="['/add', location.id]"></ion-icon></ion-card-title>
+        <ion-card-title>{{ location.id }}<ion-icon color="danger" style="margin-left: 80%;" size="large" name="settings" [routerLink]="['/add', location.uid]"></ion-icon></ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-row>

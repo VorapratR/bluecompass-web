@@ -35,8 +35,10 @@ export class BluecompassService {
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
+          const uid = a.payload.doc.id;
+          // console.log(id);
+          console.log({ uid, ...data });
+          return { uid, ...data };
         });
       })
     );
@@ -47,6 +49,7 @@ export class BluecompassService {
         return actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
+          // console.log({ id, ...data });
           return { id, ...data };
         });
       })
@@ -62,25 +65,10 @@ export class BluecompassService {
   }
 
   getLocationByID(id: string) {
-    // return this.locationCollection.doc<Location>(id).valueChanges().pipe(
-    //   take(1),
-    //   map(idea => {
-    //     idea.id = id;
-    //     console.log(idea.id);
-    //     return idea;
-    //   })
-    // );
-    return this.locationCollection.snapshotChanges().pipe(
-      map(actions => {
-        if (actions) {
-          return actions.map(action => {
-            // const id = action.payload.doc.id;
-            const data = action.payload.doc.data();
-            // const location = {id, ...data};
-            // console.log(data);
-            return data;
-          }).find(element => element.id === id);
-        }
+    return this.locationCollection.doc<Location>(id).valueChanges().pipe(
+      take(1),
+      map(location => {
+        return location;
       })
     );
   }
@@ -102,6 +90,5 @@ export class BluecompassService {
 
   deletelocation(id: string): Promise<void> {
     return this.locationCollection.doc(id).delete();
-    // return this.locationCollection.doc();
   }
 }
