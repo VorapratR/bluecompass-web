@@ -32,6 +32,11 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
+    path: 'add/image/:imgID',
+    loadChildren: () => import('./add/add.module').then( m => m.AddPageModule),
+    canActivate: [AuthGuardService],
+  },
+  {
     path: 'migrate',
     loadChildren: () => import('./migrate/migrate.module').then( m => m.MigratePageModule),
     // canActivate: [AuthGuardService],

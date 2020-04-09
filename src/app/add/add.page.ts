@@ -15,6 +15,7 @@ export class AddPage implements OnInit, OnDestroy {
   buildingFloor: number;
   buildingName: string;
   uid: string;
+  imgUID: string;
   nodeNameBuffer: string[] = [];
   nodeXpointBuffer: number[] = [];
   nodeYpointBuffer: number[] = [];
@@ -25,6 +26,7 @@ export class AddPage implements OnInit, OnDestroy {
   base64Image = '';
   fileData: File = null;
   previewUrl: any = null;
+  fileDataEditMode: File = null;
   fileUploadProgress: string = null;
 
   location: Location = {
@@ -46,12 +48,23 @@ export class AddPage implements OnInit, OnDestroy {
     neighbor: {},
     neighborList: ''
   };
+
+  imageEditMode: Image = {
+    data: '',
+    name: '',
+    tag: ''
+  };
+
   locations: Location[] = [];
   img: Image;
 
   tmpLocation;
   tmp;
-  editStage = false;
+  editStage = {
+    location: false,
+    img: false
+  };
+
 
   constructor(
     private bluecompassService: BluecompassService,
@@ -66,13 +79,20 @@ export class AddPage implements OnInit, OnDestroy {
       this.uid = this.activatedRoute.snapshot.paramMap.get('id');
       this.getNodeById(this.activatedRoute.snapshot.paramMap.get('id'));
     }
+    if (this.activatedRoute.snapshot.paramMap.get('imgID')) {
+      this.imgUID = this.activatedRoute.snapshot.paramMap.get('imgID');
+      this.getImgById(this.activatedRoute.snapshot.paramMap.get('imgID'));
+    }
   }
 
   ionViewWillEnter() {
     // this.url_id = this.activatedRoute.snapshot.paramMap.get('id');
     // console.log(this.url_id);
     if (this.activatedRoute.snapshot.paramMap.get('id')) {
-      this.editStage = true;
+      this.editStage.location = true;
+    }
+    if (this.activatedRoute.snapshot.paramMap.get('imgID')) {
+      this.editStage.img = true;
     }
   }
   addNode() {
@@ -80,6 +100,15 @@ export class AddPage implements OnInit, OnDestroy {
   }
   delNode() {
     this.locations.pop();
+  }
+
+  getImgById(id: string) {
+    console.log('ดึงข้อมูลรูป');
+    // tslint:disable-next-line:max-line-length
+    this.imageEditMode.data = 'https://cdn.vox-cdn.com/thumbor/1-PZqboOHmtgA2e3H0VWh0BFS4k=/0x0:2321x1753/3070x1727/filters:focal(926x241:1296x611):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/66351706/GettyImages_1202254631.0.jpg';
+    this.imageEditMode.name = 'name';
+    this.imageEditMode.tag = 'tag';
+    console.log(this.imageEditMode);
   }
 
   getNodeById(id: string) {
@@ -146,6 +175,11 @@ export class AddPage implements OnInit, OnDestroy {
     this.preview();
   }
 
+  fileProgressEditMode(fileInput: any) {
+    this.fileDataEditMode = fileInput.target.files[0];
+    this.previewEdit();
+  }
+
   preview() {
     const mimeType = this.fileData.type;
     if (mimeType.match(/image\/*/) == null) {
@@ -156,6 +190,19 @@ export class AddPage implements OnInit, OnDestroy {
     reader.readAsDataURL(this.fileData);
     reader.onload = (event) => {
       this.previewUrl = reader.result;
+    };
+  }
+
+  previewEdit() {
+    const mimeType = this.fileDataEditMode.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(this.fileDataEditMode);
+    reader.onload = (event) => {
+      this.imageEditMode.data = reader.result.toString();
     };
   }
 
@@ -261,5 +308,15 @@ export class AddPage implements OnInit, OnDestroy {
     // console.log(location, uid);
     this.bluecompassService.updateLocation(location, uid);
     this.navCtrl.navigateForward('/main');
+  }
+
+  deleteImg(id: string) {
+    console.log('deleteImg');
+    console.log(this.imageEditMode);
+  }
+
+  updateImg(img: Image, uid: string) {
+   console.log('updateImglocation');
+   console.log(this.imageEditMode);
   }
 }

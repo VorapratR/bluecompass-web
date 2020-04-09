@@ -9,7 +9,7 @@
 
 <ion-content>
     <!-- add -->
-    <ion-grid *ngIf="!this.editStage">
+    <ion-grid *ngIf="!this.editStage.location && !this.editStage.img">
       <ion-row>
         <ion-col>
           <h2>ข้อมูล</h2>
@@ -74,11 +74,10 @@
       </ion-row>
     </ion-grid>
 
-    <!-- edit  -->
-    <ion-card *ngIf="this.editStage">
+    <!-- edit logcation -->
+    <ion-card *ngIf="this.editStage.location && !this.editStage.img">
       <ion-card-header>
-        <ion-card-subtitle>{{this.locationEditMode.id}}</ion-card-subtitle>
-        <ion-card-title>รหัสประจำจุดเครื่องหมาย</ion-card-title>
+        <ion-card-title>รหัสประจำจุดเครื่องหมาย : {{this.locationEditMode.id}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-label position="stacked"><h3>ชื่อประจำจุดเครื่องหมาย:</h3></ion-label>
@@ -103,9 +102,38 @@
         </ion-label>
       </ion-card-content>
     </ion-card>
+
+    <!-- edit Image -->
+    <ion-card *ngIf="this.editStage.img">
+      <ion-card-header>
+        <ion-card-title>แผนผัง</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button expand="block" fill="outline">
+          <input type="file" name="image" (change)="fileProgressEditMode($event)"/>
+        </ion-button>
+        <img [src]="this.imageEditMode.data"/>
+        <ion-input required type="number" [(ngModel)]="this.imageEditMode.name" id="x">ชื่ออาคาร:</ion-input>
+        <ion-input required type="number" [(ngModel)]="this.imageEditMode.tag" id="x">ชื่อแท็ก:</ion-input>
+        <ion-row no-padding text-center>
+          <ion-col size="6">
+            <ion-button expand="block" fill="outline" color="danger" (click)="deleteImg(uid)">
+              <ion-icon name="trash" slot="start"></ion-icon>
+              ลบข้อมูล
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button expand="block" fill="solid" color="success" (click)="updateImg(this.imageEditMode, uid)">
+              <ion-icon name="save" slot="start"></ion-icon>
+              อัปเดตข้อมูล
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
 </ion-content>
 
-<ion-footer *ngIf="this.editStage">
+<ion-footer *ngIf="this.editStage.location">
   <ion-row no-padding text-center>
     <ion-col size="6">
       <ion-button expand="block" fill="outline" color="danger" (click)="deleteLocation(uid)">

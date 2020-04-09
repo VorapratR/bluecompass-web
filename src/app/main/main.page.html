@@ -52,12 +52,12 @@
   </ion-item>
   <ion-list *ngIf="this.staticImageList">
     <ion-card *ngFor="let img of (imgs | async)">
-      <img *ngIf="img.data" [src]="img.data"/>
-      <img *ngIf="!img.data" src="../../assets/baramee1.png"/>
       <ion-card-header>
-        <ion-card-subtitle>ชื่ออาคาร</ion-card-subtitle>
-        <ion-card-title>{{img.name}}</ion-card-title>
+        <ion-card-subtitle>ชื่ออาคาร</ion-card-subtitle> 
+        <!-- ใส่ uid ของรูปตรงนี้  -->
+        <ion-card-title>{{img.name}} <ion-icon color="danger" style="margin-left: 90%;" size="large" name="settings" [routerLink]="['/add/image', 'uid']"></ion-icon></ion-card-title>
       </ion-card-header>
+      <img height="42%" width="42%" *ngIf="img.data" [src]="img.data"/>
     </ion-card>
   </ion-list>
 </ion-content>
