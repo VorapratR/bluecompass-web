@@ -34,7 +34,7 @@ const routes: Routes = [
   {
     path: 'migrate',
     loadChildren: () => import('./migrate/migrate.module').then( m => m.MigratePageModule),
-    canActivate: [AuthGuardService],
+    // canActivate: [AuthGuardService],
   },
   {
     path: 'users',

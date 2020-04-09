@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 // import { LocationStrategy } from '@angular/common';
 import { BluecompassService } from '../services/bluecompass.service';
 import { __await } from 'tslib';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-migrate',
@@ -11,7 +12,7 @@ import { __await } from 'tslib';
 })
 export class MigratePage implements OnInit {
 
-  constructor(private https: HttpClient, private bluecompassService: BluecompassService) { }
+  constructor(public menuCtrl: MenuController, private https: HttpClient, private bluecompassService: BluecompassService) { }
 
   jsonData: any;
   baramee: any[] = [];
@@ -25,7 +26,18 @@ export class MigratePage implements OnInit {
       // console.log(data.locations);
       // tslint:disable-next-line: prefer-for-of
       for (let i = 0 ; i < data.locations.length; i++) {
-        console.log(data.locations[i]);
+        let neighborList = '';
+        const nodeList = Object.entries(data.locations[i].neighbor);
+        for (let neighbor of nodeList) {
+          // console.log(j);
+          neighborList += neighbor[0] + ':' + neighbor[1] + ',';
+        }
+        // console.log(neighborList);
+        data.locations[i].neighborList = neighborList;
+        // console.log(data.locations[i].neighborList);
+        // console.log(data.locations[i]);
+        // console.log('====');
+        // console.log(nodeList);
         if (data.locations[i].id.includes('baramee')) {
           this.baramee.push(data.locations[i]);
         } else {
@@ -34,6 +46,10 @@ export class MigratePage implements OnInit {
       }
       await this.sleep(500);
     });
+  }
+
+  ionViewWillEnter() {
+    this.menuCtrl.enable(false);
   }
 
   async migrateData() {

@@ -1,7 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { BluecompassService, Location, Image } from './../services/bluecompass.service';
 import { Component, OnInit , OnDestroy} from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController, NavController } from '@ionic/angular';
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
@@ -14,7 +14,7 @@ export class AddPage implements OnInit, OnDestroy {
   buildingID: string;
   buildingFloor: number;
   buildingName: string;
-
+  uid: string;
   nodeNameBuffer: string[] = [];
   nodeXpointBuffer: number[] = [];
   nodeYpointBuffer: number[] = [];
@@ -57,11 +57,13 @@ export class AddPage implements OnInit, OnDestroy {
     private bluecompassService: BluecompassService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private navCtrl: NavController,
   ) {}
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.paramMap.get('id')) {
+      this.uid = this.activatedRoute.snapshot.paramMap.get('id');
       this.getNodeById(this.activatedRoute.snapshot.paramMap.get('id'));
     }
   }
@@ -83,18 +85,17 @@ export class AddPage implements OnInit, OnDestroy {
   getNodeById(id: string) {
     // console.log('in get node id');
     this.tmpLocation = this.bluecompassService.getLocationByID(id);
-    console.log(this.tmpLocation);
+    // console.log(this.tmpLocation);
     this.tmpLocation.forEach(location => {
-      (location.id) ? this.locationEditMode.id = location.id : this.locationEditMode.id = 'ไม่พบข้อมูล';
-      (location.name) ? this.locationEditMode.name = location.name : this.locationEditMode.name = location.name = 'ไม่พบข้อมูล';
-      (location.neighbor) ? this.locationEditMode.neighbor = location.neighbor : this.locationEditMode.neighbor = 'ไม่พบข้อมูล';
+      (location.id) ? this.locationEditMode.id = location.id : this.locationEditMode.id = '';
+      (location.name) ? this.locationEditMode.name = location.name : this.locationEditMode.name = location.name = '';
+      // (location.neighbor) ? this.locationEditMode.neighbor = location.neighbor : this.locationEditMode.neighbor = '';
       // tslint:disable-next-line:max-line-length
-      (location.neighborList) ? this.locationEditMode.neighborList = location.neighborlist:this.locationEditMode.neighborList = 'ไม่พบข้อมูล';
+      (location.neighborList) ? this.locationEditMode.neighborList = location.neighborlist : this.locationEditMode.neighborList = '';
       this.locationEditMode.x_point = location.x_point;
       this.locationEditMode.y_point = location.y_point;
       this.locationEditMode.floor = location.floor;
     });
-
   }
 
   submitForm() {
@@ -110,19 +111,19 @@ export class AddPage implements OnInit, OnDestroy {
       if (this.nodeNeighborBuffer) {
         const perNeighbor = {};
         this.nodeNeighborBuffer[i].split(',').forEach(neighbor => {
-          neighbor.split('*').forEach((weightNeighbor) => {
+          neighbor.split(':').forEach((weightNeighbor) => {
+            let nodeData = neighbor.split(':');
             // tslint:disable-next-line:radix
-            if (parseInt(weightNeighbor)) {
-              const name = neighbor.toString().slice(0, -2);
-              // tslint:disable-next-line:radix
-              perNeighbor[name] = parseInt(weightNeighbor);
+            if (parseInt(nodeData[1])) {
+              const name = nodeData[0];
+              perNeighbor[name.trim()] = parseInt(nodeData[1]);
             }
           });
         });
         node.neighbor = perNeighbor;
-        node.neighborList = Object.keys(perNeighbor).toString();
+        // node.neighborList = Object.keys(perNeighbor).toString();
       } else {
-        node.neighbor = null;
+        node.neighbor = {};
         node.neighborList = '';
       }
     });
@@ -233,11 +234,32 @@ export class AddPage implements OnInit, OnDestroy {
     });
     toast.present();
   }
-  deleteIdea() {
-    console.log('del');
+
+  deleteLocation(id: string) {
+    this.bluecompassService.deletelocation(id);
+    // console.log(id);
   }
 
-  updateIdea() {
-    console.log('update');
+  updateLocation(location: Location, uid: string) {
+    if (location.neighborList) {
+      const perNeighbor = {};
+      location.neighborList.split(',').forEach(neighbor => {
+        // console.log(neighbor);
+        let nodeData = neighbor.split(':');
+        if (parseInt(nodeData[1])) {
+          const name = nodeData[0];
+          perNeighbor[name.trim()] = parseInt(nodeData[1]);
+        }
+      });
+      location.neighbor = perNeighbor;
+      // location.neighborList = Object.entries(perNeighbor).toString();
+      // console.log(location.neighborList);
+    } else {
+      location.neighbor = {};
+      location.neighborList = '';
+    }
+    // console.log(location, uid);
+    this.bluecompassService.updateLocation(location, uid);
+    this.navCtrl.navigateForward('/main');
   }
 }

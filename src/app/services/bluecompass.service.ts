@@ -81,10 +81,14 @@ export class BluecompassService {
     return this.imgCollection.add(img);
   }
 
-  updateLocation(location: Location): Promise<void> {
-    return this.locationCollection.doc(location.id).update({
-      name: location.name, floor: location.floor,
-      x_point: location.x_point, y_point: location.y_point
+  updateLocation(location: Location, uid: string): Promise<void> {
+    return this.locationCollection.doc(uid).update({
+      name: location.name,
+      floor: location.floor,
+      x_point: location.x_point,
+      y_point: location.y_point,
+      neighbor: location.neighbor,
+      neighborList: location.neighborList
     });
   }
 

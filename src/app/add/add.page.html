@@ -59,8 +59,8 @@
                 <ion-textarea rows="2" cols="20" [(ngModel)]="this.nodeNeighborBuffer[i]"></ion-textarea>
               </ion-item>
               <ion-label style="color: red;">
-                <b>*หมายเหตุ:</b> กรุณาใส่ชื่อจุดเครื่องหมาย โดยใช้เครื่องหมายดอกจัน ('*') ต่อท้ายเพื่อระบุระยะของจุดเครื่องหมายโดยรอบ และใช้เครื่องหมายจุลภาค (',') คั่นกลางระหว่างจุดเครื่องหมาย เช่น data_1-1*4,data_1-2*1
-              </ion-label>มึ
+                <b>*หมายเหตุ:</b> กรุณาใส่ชื่อจุดเครื่องหมาย โดยใช้เครื่องหมายดอกจัน (':') ต่อท้ายเพื่อระบุระยะของจุดเครื่องหมายโดยรอบ และใช้เครื่องหมายจุลภาค (',') คั่นกลางระหว่างจุดเครื่องหมาย เช่น data1_1:4,data1_1:1
+              </ion-label>
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -99,7 +99,7 @@
           <ion-textarea rows="2" cols="20" [(ngModel)]="this.locationEditMode.neighborList"></ion-textarea>
         </ion-item>
         <ion-label style="color: red;">
-          <b>*หมายเหตุ:</b> กรุณาใส่ชื่อจุดเครื่องหมาย โดยใช้เครื่องหมายดอกจัน ('*') ต่อท้ายเพื่อระบุระยะของจุดเครื่องหมายโดยรอบ และใช้เครื่องหมายจุลภาค (',') คั่นกลางระหว่างจุดเครื่องหมาย เช่น data_1-1*4,data_1-2*1
+          <b>*หมายเหตุ:</b> กรุณาใส่ชื่อจุดเครื่องหมาย โดยใช้เครื่องหมายดอกจัน (':') ต่อท้ายเพื่อระบุระยะของจุดเครื่องหมายโดยรอบ และใช้เครื่องหมายจุลภาค (',') คั่นกลางระหว่างจุดเครื่องหมาย เช่น data1_1:4,data1_2:1
         </ion-label>
       </ion-card-content>
     </ion-card>
@@ -108,13 +108,13 @@
 <ion-footer *ngIf="this.editStage">
   <ion-row no-padding text-center>
     <ion-col size="6">
-      <ion-button expand="block" fill="outline" color="danger" (click)="deleteIdea()">
+      <ion-button expand="block" fill="outline" color="danger" (click)="deleteLocation(uid)">
         <ion-icon name="trash" slot="start"></ion-icon>
         ลบข้อมูล
       </ion-button>
     </ion-col>
     <ion-col size="6">
-      <ion-button expand="block" fill="solid" color="success" (click)="updateIdea()">
+      <ion-button expand="block" fill="solid" color="success" (click)="updateLocation(locationEditMode, uid)">
         <ion-icon name="save" slot="start"></ion-icon>
         อัปเดตข้อมูล
       </ion-button>
