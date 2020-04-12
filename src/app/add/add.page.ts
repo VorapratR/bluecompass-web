@@ -131,8 +131,8 @@ export class AddPage implements OnInit, OnDestroy {
 
   submitForm() {
     this.successToast();
-    console.log(this.locations);
-    console.log(this.nodeNeighborBuffer);
+    // console.log(this.locations);
+    // console.log(this.nodeNeighborBuffer);
     this.locations.forEach((node, i) => {
       node.id = `${this.buildingID}${this.buildingFloor}_${i}`;
       node.name = this.nodeNameBuffer[i];
@@ -213,9 +213,9 @@ export class AddPage implements OnInit, OnDestroy {
       location: false,
       img: false
     };
-    console.log(this.img);
+    // console.log(this.img);
     this.locations.forEach(location => {
-      console.log(location);
+      // console.log(location);
       if (location.id) {
         this.bluecompassService.addLocation(location).then(() => {
           console.log('Location added');

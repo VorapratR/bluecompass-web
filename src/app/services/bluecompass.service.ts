@@ -37,7 +37,7 @@ export class BluecompassService {
           const data = a.payload.doc.data();
           const uid = a.payload.doc.id;
           // console.log(id);
-          console.log({ uid, ...data });
+          // console.log({ uid, ...data });
           return { uid, ...data };
         });
       })
