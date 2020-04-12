@@ -24,6 +24,11 @@ export class MainPage implements OnInit, OnDestroy {
   public currentUser: User;
   public isAdmin: boolean;
   public isContributor: boolean;
+  public allLocations: Array<Location> = [];
+  public filterLocations: Array<Location>  = [];
+  public lastPage  = false;
+  public textStatus = 'รายการจุดเครื่องหมาย';
+   searchInput = '';
 
   constructor(
     public menuCtrl: MenuController,
@@ -37,6 +42,17 @@ export class MainPage implements OnInit, OnDestroy {
       this.presentLoading();
     }
 
+  }
+
+  inputSearch(event) {
+    this.textStatus = 'ผลการค้นหา';
+    this.searchInput = event.target.value;
+    this.setFilteredLocations();
+  }
+  setFilteredLocations() {
+    this.filterLocations = this.allLocations.filter((item) => {
+      return item.id.toLowerCase().indexOf(this.searchInput.toLowerCase()) > -1;
+    });
   }
 
   async presentLoading() {
@@ -61,6 +77,15 @@ export class MainPage implements OnInit, OnDestroy {
         this.neighor = Object.keys(element.neighbor);
       });
     });
+
+    this.bluecompassService.getAllLocations().subscribe(
+      results => {
+        // console.log(results);
+        this.allLocations = results;
+        this.filterLocations = results;
+      }
+    );
+
     // console.log(this.locations);
     this.imgs = this.bluecompassService.getAllImage();
     // console.log('location done');

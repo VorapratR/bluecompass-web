@@ -103,12 +103,12 @@ export class AddPage implements OnInit, OnDestroy {
   }
 
   getImgById(id: string) {
-    console.log('ดึงข้อมูลรูป');
+    // console.log('ดึงข้อมูลรูป');
     // tslint:disable-next-line:max-line-length
     this.imageEditMode.data = 'https://cdn.vox-cdn.com/thumbor/1-PZqboOHmtgA2e3H0VWh0BFS4k=/0x0:2321x1753/3070x1727/filters:focal(926x241:1296x611):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/66351706/GettyImages_1202254631.0.jpg';
     this.imageEditMode.name = 'name';
     this.imageEditMode.tag = 'tag';
-    console.log(this.imageEditMode);
+    // console.log(this.imageEditMode);
   }
 
   getNodeById(id: string) {
@@ -129,8 +129,8 @@ export class AddPage implements OnInit, OnDestroy {
 
   submitForm() {
     this.successToast();
-    console.log(this.locations);
-    console.log(this.nodeNeighborBuffer);
+    // console.log(this.locations);
+    // console.log(this.nodeNeighborBuffer);
     this.locations.forEach((node, i) => {
       node.id = `${this.buildingID}${this.buildingFloor}_${i}`;
       node.name = this.nodeNameBuffer[i];
@@ -211,9 +211,9 @@ export class AddPage implements OnInit, OnDestroy {
       location: false,
       img: false
     };
-    console.log(this.img);
+    // console.log(this.img);
     this.locations.forEach(location => {
-      console.log(location);
+      // console.log(location);
       if (location.id) {
         this.bluecompassService.addLocation(location).then(() => {
           console.log('Location added');
@@ -312,7 +312,7 @@ export class AddPage implements OnInit, OnDestroy {
 
   deleteImg(id: string) {
     console.log('deleteImg');
-    console.log(this.imageEditMode);
+    // console.log(this.imageEditMode);
   }
 
   updateImg(img: Image, uid: string) {

@@ -19,13 +19,15 @@
     </ion-segment-button>
   </ion-segment>
   <ion-item *ngIf="this.staticNodeList">
-    <h1>รายการจุดเครื่องหมาย</h1>
+    <h1>{{textStatus}}</h1>
   </ion-item>
+  <ion-searchbar placeholder="ค้นหาหมายเลขประจำจุดเครื่อหมาย" shape="round" color="light" animated="true" mode="ios" (ionChange)="inputSearch($event)">
+  </ion-searchbar>
   <ion-list *ngIf="this.staticNodeList">
-    <ion-card *ngFor="let location of (locations | async) let i of index">
+    <ion-card *ngFor="let location of filterLocations let i of index">
       <ion-card-header>
         <ion-card-subtitle>รหัสประจำจุดเครื่องหมาย:</ion-card-subtitle>
-        <ion-card-title>{{ location.id }}<ion-icon color="danger" style="margin-left: 80%;" size="large" name="settings" [routerLink]="['/add', location.uid]"></ion-icon></ion-card-title>
+        <ion-card-title>{{ location.id }}<ion-icon color="danger" style="margin-left: 90%;" size="large" name="settings" [routerLink]="['/add', location.uid]"></ion-icon></ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-row>
