@@ -64,6 +64,27 @@ export class BluecompassService {
     return this.imgs;
   }
 
+  getImageById(id: string) {
+    return this.imgCollection.doc<Image>(id).valueChanges().pipe(
+      take(1),
+      map(img => {
+        return img;
+      })
+    );
+  }
+
+  deleteImg(id: string) {
+    return this.imgCollection.doc(id).delete();
+  }
+
+  updateImg(img: Image, id: string) {
+    return this.imgCollection.doc(id).update({
+      data: img.data,
+      name: img.name,
+      tag: img.tag
+    });
+  }
+
   getLocationByID(id: string) {
     return this.locationCollection.doc<Location>(id).valueChanges().pipe(
       take(1),

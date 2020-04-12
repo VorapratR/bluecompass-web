@@ -103,12 +103,14 @@ export class AddPage implements OnInit, OnDestroy {
   }
 
   getImgById(id: string) {
-    console.log('ดึงข้อมูลรูป');
     // tslint:disable-next-line:max-line-length
-    this.imageEditMode.data = 'https://cdn.vox-cdn.com/thumbor/1-PZqboOHmtgA2e3H0VWh0BFS4k=/0x0:2321x1753/3070x1727/filters:focal(926x241:1296x611):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/66351706/GettyImages_1202254631.0.jpg';
-    this.imageEditMode.name = 'name';
-    this.imageEditMode.tag = 'tag';
-    console.log(this.imageEditMode);
+    let imageData = this.bluecompassService.getImageById(id);
+    imageData.forEach(img => {
+      console.log(img);
+      this.imageEditMode.data = img.data;
+      this.imageEditMode.name = img.name;
+      this.imageEditMode.tag = img.tag;
+    });
   }
 
   getNodeById(id: string) {
@@ -120,7 +122,7 @@ export class AddPage implements OnInit, OnDestroy {
       (location.name) ? this.locationEditMode.name = location.name : this.locationEditMode.name = location.name = '';
       // (location.neighbor) ? this.locationEditMode.neighbor = location.neighbor : this.locationEditMode.neighbor = '';
       // tslint:disable-next-line:max-line-length
-      (location.neighborList) ? this.locationEditMode.neighborList = location.neighborlist : this.locationEditMode.neighborList = '';
+      (location.neighborList) ? this.locationEditMode.neighborList = location.neighborList : this.locationEditMode.neighborList = '';
       this.locationEditMode.x_point = location.x_point;
       this.locationEditMode.y_point = location.y_point;
       this.locationEditMode.floor = location.floor;
@@ -284,6 +286,7 @@ export class AddPage implements OnInit, OnDestroy {
 
   deleteLocation(id: string) {
     this.bluecompassService.deletelocation(id);
+    this.navCtrl.navigateForward('/main');
     // console.log(id);
   }
 
@@ -311,12 +314,12 @@ export class AddPage implements OnInit, OnDestroy {
   }
 
   deleteImg(id: string) {
-    console.log('deleteImg');
-    console.log(this.imageEditMode);
+    this.bluecompassService.deleteImg(id);
+    this.navCtrl.navigateForward('/main');
   }
 
-  updateImg(img: Image, uid: string) {
-   console.log('updateImglocation');
-   console.log(this.imageEditMode);
+  updateImg(img: Image, id: string) {
+    this.bluecompassService.updateImg(img, id);
+    this.navCtrl.navigateForward('/main');
   }
 }
