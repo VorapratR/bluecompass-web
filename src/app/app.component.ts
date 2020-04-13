@@ -75,12 +75,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   getCurrentUser() {
     if (this.afAuth.auth.currentUser !== null && !this.currentUser) {
-      console.log('x');
+      // console.log('x');
       this.uSub = this.userService.getById(this.afAuth.auth.currentUser.uid).subscribe(user => {
         this.currentUser = user;
         this.isAdmin = this.userService.isAdmin(this.currentUser);
         this.isContributor = this.userService.isContributor(this.currentUser);
-        console.log(this.currentUser);
+        // console.log(this.currentUser);
       });
     }
     return this.currentUser ? true : false;

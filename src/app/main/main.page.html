@@ -21,7 +21,7 @@
   <ion-item *ngIf="this.staticNodeList">
     <h1>{{textStatus}}</h1>
   </ion-item>
-  <ion-searchbar placeholder="ค้นหาหมายเลขประจำจุดเครื่อหมาย" shape="round" color="light" animated="true" mode="ios" (ionChange)="inputSearch($event)">
+  <ion-searchbar *ngIf="this.staticNodeList" placeholder="ค้นหาหมายเลขประจำจุดเครื่องหมาย" shape="round" color="light" animated="true" mode="ios" (ionChange)="inputSearch($event)">
   </ion-searchbar>
   <ion-list *ngIf="this.staticNodeList">
     <ion-card *ngFor="let location of filterLocations let i of index">

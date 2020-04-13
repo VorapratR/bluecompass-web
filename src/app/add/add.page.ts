@@ -61,6 +61,7 @@ export class AddPage implements OnInit, OnDestroy {
   tmpLocation;
   tmp;
   editStage = {
+    add: true,
     location: false,
     img: false
   };
@@ -72,7 +73,7 @@ export class AddPage implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public toastController: ToastController,
     private navCtrl: NavController,
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.activatedRoute.snapshot.paramMap.get('id')) {
@@ -90,9 +91,16 @@ export class AddPage implements OnInit, OnDestroy {
     // console.log(this.url_id);
     if (this.activatedRoute.snapshot.paramMap.get('id')) {
       this.editStage.location = true;
-    }
-    if (this.activatedRoute.snapshot.paramMap.get('imgID')) {
+      this.editStage.add = false;
+      this.editStage.img = false;
+    } else if (this.activatedRoute.snapshot.paramMap.get('imgID')) {
       this.editStage.img = true;
+      this.editStage.location = false;
+      this.editStage.add = false;
+    } else {
+      this.editStage.add = true;
+      this.editStage.img = false;
+      this.editStage.location = false;
     }
   }
   addNode() {
@@ -152,7 +160,12 @@ export class AddPage implements OnInit, OnDestroy {
           });
         });
         node.neighbor = perNeighbor;
-        // node.neighborList = Object.keys(perNeighbor).toString();
+        console.log(node.neighbor);
+        let list = '';
+        for (const [key, value] of Object.entries(perNeighbor)) {
+          list += `${key}:${value},`;
+        }
+        node.neighborList = list;
       } else {
         node.neighbor = {};
         node.neighborList = '';
@@ -238,8 +251,8 @@ export class AddPage implements OnInit, OnDestroy {
         console.log('No Image');
     }
     if (dataStatus.img && dataStatus.location) {
-      this.clearData();
       this.router.navigateByUrl(`/main`);
+      // this.clearData();
     } else {
       this.missingToast();
     }

@@ -66,6 +66,13 @@ export class MainPage implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.bluecompassService.getAllLocations().subscribe(
+      results => {
+        // console.log(results);
+        this.allLocations = results;
+        this.filterLocations = results;
+      }
+    );
     await this.loadUser();
     await this.loadLocation();
   }
@@ -77,15 +84,6 @@ export class MainPage implements OnInit, OnDestroy {
         this.neighor = Object.keys(element.neighbor);
       });
     });
-
-    this.bluecompassService.getAllLocations().subscribe(
-      results => {
-        // console.log(results);
-        this.allLocations = results;
-        this.filterLocations = results;
-      }
-    );
-
     // console.log(this.locations);
     this.imgs = this.bluecompassService.getAllImage();
     // console.log('location done');

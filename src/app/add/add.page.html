@@ -1,15 +1,15 @@
 <ion-header translucent>
   <ion-toolbar>
-    <ion-title text-center *ngIf="!this.editStage">เพิ่มข้อมูลโครงสร้างภายในอาคาร</ion-title>
-    <ion-title style="color: red;" text-center *ngIf="this.editStage">แก้ไขข้อมูลโครงสร้างภายในอาคาร</ion-title>
-    <ion-button *ngIf="!this.editStage" slot="end" color="danger" (click)="submitForm()"><ion-icon name="save" style="margin-right: 3%;"></ion-icon> บันทึกข้อมูล </ion-button>
+    <ion-title text-center *ngIf="this.editStage.add">เพิ่มข้อมูลโครงสร้างภายในอาคาร</ion-title>
+    <ion-title style="color: red;" text-center *ngIf="!this.editStage.add">แก้ไขข้อมูลโครงสร้างภายในอาคาร</ion-title>
+    <ion-button *ngIf="this.editStage.add" slot="end" color="danger" (click)="submitForm()"><ion-icon name="save" style="margin-right: 3%;"></ion-icon> บันทึกข้อมูล </ion-button>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
     <!-- add -->
-    <ion-grid *ngIf="!this.editStage.location && !this.editStage.img">
+    <ion-grid *ngIf="this.editStage.add">
       <ion-row>
         <ion-col>
           <h2>ข้อมูล</h2>
@@ -38,7 +38,7 @@
             <ion-icon (click)="delNode()" color="danger" size="large" style="margin-left: 90%; margin-top: 2%;" name="close-circle-outline"></ion-icon>
             <ion-card-header>
               <ion-card-subtitle>รหัสประจำจุดเครื่องหมาย</ion-card-subtitle>
-              <ion-card-title>{{this.buildingID}}_{{this.buildingFloor}} - {{i}}</ion-card-title>
+              <ion-card-title>{{this.buildingID}}{{this.buildingFloor}}_{{i}}</ion-card-title>
             </ion-card-header>
             <ion-card-content>
               <ion-label position="stacked"><h3>ชื่อประจำจุดเครื่องหมาย:</h3></ion-label>
@@ -75,7 +75,7 @@
     </ion-grid>
 
     <!-- edit logcation -->
-    <ion-card *ngIf="this.editStage.location && !this.editStage.img">
+    <ion-card *ngIf="this.editStage.location">
       <ion-card-header>
         <ion-card-title>รหัสประจำจุดเครื่องหมาย : {{this.locationEditMode.id}}</ion-card-title>
       </ion-card-header>
