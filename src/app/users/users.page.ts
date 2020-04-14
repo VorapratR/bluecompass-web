@@ -32,16 +32,16 @@ export class UsersPage implements OnInit, OnDestroy {
   roles: any[] = [
     {
       value: 'guest',
-      label: 'guest'
+      label: 'รออนุมัติ'
+    },
+    {
+      value: 'contributor',
+      label: 'เจ้าหน้าที่'
     },
     {
       value: 'admin',
       label: 'ผู้ดูแลระบบ'
     },
-    {
-      value: 'contributor',
-      label: 'เจ้าหน้าที่'
-    }
   ];
 
   users: Observable<User[]>;

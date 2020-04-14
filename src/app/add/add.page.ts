@@ -1,7 +1,8 @@
+import { async } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BluecompassService, Location, Image } from './../services/bluecompass.service';
 import { Component, OnInit , OnDestroy} from '@angular/core';
-import { ToastController, NavController } from '@ionic/angular';
+import { ToastController, NavController, AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
@@ -16,6 +17,7 @@ export class AddPage implements OnInit, OnDestroy {
   buildingName: string;
   uid: string;
   imgUID: string;
+  countNode: number;
   nodeNameBuffer: string[] = [];
   nodeXpointBuffer: number[] = [];
   nodeYpointBuffer: number[] = [];
@@ -57,6 +59,10 @@ export class AddPage implements OnInit, OnDestroy {
 
   locations: Location[] = [];
   img: Image;
+  submitPost = {
+    countLocation: 0,
+    img: false
+  };
 
   tmpLocation;
   tmp;
@@ -65,14 +71,13 @@ export class AddPage implements OnInit, OnDestroy {
     location: false,
     img: false
   };
-
-
   constructor(
     private bluecompassService: BluecompassService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public toastController: ToastController,
     private navCtrl: NavController,
+    public alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -83,6 +88,12 @@ export class AddPage implements OnInit, OnDestroy {
     if (this.activatedRoute.snapshot.paramMap.get('imgID')) {
       this.imgUID = this.activatedRoute.snapshot.paramMap.get('imgID');
       this.getImgById(this.activatedRoute.snapshot.paramMap.get('imgID'));
+    }
+  }
+
+  checkAndClearCountNode(data: number) {
+    if (data) {
+      this.locations = [];
     }
   }
 
@@ -103,16 +114,30 @@ export class AddPage implements OnInit, OnDestroy {
       this.editStage.location = false;
     }
   }
-  addNode() {
+  addNode(length: number) {
+    for (let index = 0; index < length; index++) {
+      this.locations.push(this.location);
+      this.nodeNameBuffer.push();
+      this.nodeXpointBuffer.push();
+      this.nodeYpointBuffer.push();
+      this.nodeNeighborBuffer.push();
+    }
+  }
+  addOneNode() {
     this.locations.push(this.location);
+    this.nodeNameBuffer.push();
+    this.nodeXpointBuffer.push();
+    this.nodeYpointBuffer.push();
+    this.nodeNeighborBuffer.push();
   }
   delNode() {
     this.locations.pop();
+    this.nodeNeighborBuffer.pop();
   }
 
   getImgById(id: string) {
     // tslint:disable-next-line:max-line-length
-    let imageData = this.bluecompassService.getImageById(id);
+    const imageData = this.bluecompassService.getImageById(id);
     imageData.forEach(img => {
       console.log(img);
       this.imageEditMode.data = img.data;
@@ -136,52 +161,86 @@ export class AddPage implements OnInit, OnDestroy {
       this.locationEditMode.floor = location.floor;
     });
   }
+  
+  async missData() {
+    const alert = await this.alertController.create({
+      header: 'พบข้อผิดพลาด',
+      subHeader: 'กรุณากรองข้อมูลในรบ',
+      buttons: ['ฉันเข้าใจแล้ว']
+    });
+    await alert.present();
+  }
 
   submitForm() {
     this.successToast();
-    // console.log(this.locations);
-    // console.log(this.nodeNeighborBuffer);
-    this.locations.forEach((node, i) => {
-      node.id = `${this.buildingID}${this.buildingFloor}_${i}`;
-      node.name = this.nodeNameBuffer[i];
-      node.x_point = this.nodeXpointBuffer[i];
-      node.y_point = this.nodeYpointBuffer[i];
-      node.floor = this.buildingFloor;
-      if (this.nodeNeighborBuffer) {
-        const perNeighbor = {};
-        this.nodeNeighborBuffer[i].split(',').forEach(neighbor => {
-          neighbor.split(':').forEach((weightNeighbor) => {
-            let nodeData = neighbor.split(':');
-            // tslint:disable-next-line:radix
-            if (parseInt(nodeData[1])) {
-              const name = nodeData[0];
-              perNeighbor[name.trim()] = parseInt(nodeData[1]);
-            }
+    if (this.locations && this.previewUrl && this.nodeNeighborBuffer) {
+      this.locations.map((node, i) => {
+        node.id = `${this.buildingID}${this.buildingFloor}_${i}`;
+        node.name = this.nodeNameBuffer[i];
+        node.x_point = this.nodeXpointBuffer[i];
+        node.y_point = this.nodeYpointBuffer[i];
+        node.floor = this.buildingFloor;
+        if (this.nodeNeighborBuffer) {
+          const perNeighbor = {};
+          this.nodeNeighborBuffer[i].split(',').forEach(neighbor => {
+            neighbor.split(':').forEach((weightNeighbor) => {
+              const nodeData = neighbor.split(':');
+              // tslint:disable-next-line:radix
+              if (parseInt(nodeData[1])) {
+                const name = nodeData[0];
+                perNeighbor[name.trim()] = parseInt(nodeData[1]);
+              }
+            });
           });
-        });
-        node.neighbor = perNeighbor;
-        console.log(node.neighbor);
-        let list = '';
-        for (const [key, value] of Object.entries(perNeighbor)) {
-          list += `${key}:${value},`;
+          node.neighbor = perNeighbor;
+          let list = '';
+          for (const [key, value] of Object.entries(perNeighbor)) {
+            list += `${key}:${value},`;
+          }
+          node.neighborList = list;
+        } else {
+          node.neighbor = {};
+          node.neighborList = '';
         }
-        node.neighborList = list;
-      } else {
-        node.neighbor = {};
-        node.neighborList = '';
-      }
-    });
-    // console.log(this.locations);
-    this.img = {
-      data : this.previewUrl,
-      name : this.buildingName,
-      tag: this.buildingID + this.buildingFloor,
-    };
-    if (this.locations.length && this.img.data) {
-      this.addLocationImage();
+        this.postLocation(node);
+        return node;
+      });
+      this.img = {
+        data : this.previewUrl,
+        name : this.buildingName,
+        tag: this.buildingID + this.buildingFloor,
+      };
+      this.postImg(this.img);
       this.router.navigateByUrl(`/main`);
     } else {
-      console.log('Dont Have Data');
+      this.missData();
+    }
+    this.checkStatus();
+  }
+
+  postLocation(data: Location) {
+    this.bluecompassService.addLocation(data).then(() => {
+      this.submitPost.countLocation += 1;
+      return true;
+    }, err => {
+      console.log('There was a problem adding your location:(');
+    });
+  }
+
+  postImg(data: Image) {
+    this.bluecompassService.addImg(this.img).then(() => {
+      this.submitPost.img = true;
+    }, err => {
+      console.log('There was a problem adding your Img:(');
+    });
+  }
+
+  checkStatus() {
+    if (this.locations.length === this.submitPost.countLocation && this.submitPost.img) {
+      this.clearData();
+      this.router.navigateByUrl(`/main`);
+    } else {
+      this.missingToast();
     }
   }
 

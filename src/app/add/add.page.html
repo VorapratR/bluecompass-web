@@ -33,8 +33,19 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-button expand="block" (click)="addNode()" ><ion-icon style="margin-right: 1%;" name="add-circle-outline"></ion-icon>เพิ่มจุดเครื่องหมาย</ion-button>
-          <ion-card *ngFor="let locat of locations;let i = index;">
+          <!-- <ion-label style="margin-left: 5%;" position="floating">จำนวนจุดเครื่องหมาย</ion-label>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-input type="number" [(ngModel)]="countNode" id="countNode" (ionChange)= checkAndClearCountNode(countNode)></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-button expand="block" (click)="addNode(countNode)" ><ion-icon style="margin-right: 1%;" name="add-circle-outline"></ion-icon>เพิ่มจุดเครื่องหมาย</ion-button>
+            </ion-col>
+          </ion-row> -->
+          <ion-button expand="block" (click)="addOneNode()" ><ion-icon style="margin-right: 1%;" name="add-circle-outline"></ion-icon>เพิ่มจุดเครื่องหมาย</ion-button>
+          <ion-card *ngFor="let locat of locations; let i = index">
             <ion-icon (click)="delNode()" color="danger" size="large" style="margin-left: 90%; margin-top: 2%;" name="close-circle-outline"></ion-icon>
             <ion-card-header>
               <ion-card-subtitle>รหัสประจำจุดเครื่องหมาย</ion-card-subtitle>
