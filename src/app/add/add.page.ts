@@ -161,7 +161,7 @@ export class AddPage implements OnInit, OnDestroy {
       this.locationEditMode.floor = location.floor;
     });
   }
-  
+
   async missData() {
     const alert = await this.alertController.create({
       header: 'พบข้อผิดพลาด',
@@ -188,6 +188,7 @@ export class AddPage implements OnInit, OnDestroy {
               // tslint:disable-next-line:radix
               if (parseInt(nodeData[1])) {
                 const name = nodeData[0];
+                // tslint:disable-next-line:radix
                 perNeighbor[name.trim()] = parseInt(nodeData[1]);
               }
             });
@@ -367,9 +368,11 @@ export class AddPage implements OnInit, OnDestroy {
       const perNeighbor = {};
       location.neighborList.split(',').forEach(neighbor => {
         // console.log(neighbor);
-        let nodeData = neighbor.split(':');
+        const nodeData = neighbor.split(':');
+        // tslint:disable-next-line:radix
         if (parseInt(nodeData[1])) {
           const name = nodeData[0];
+          // tslint:disable-next-line:radix
           perNeighbor[name.trim()] = parseInt(nodeData[1]);
         }
       });
